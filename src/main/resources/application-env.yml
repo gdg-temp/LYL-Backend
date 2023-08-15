@@ -1,0 +1,7 @@
+auth:
+  jwt:
+    secretKey: aGlnaGJhbGw=
+    accessExp: 1800
+    refreshExp: 50400
+    header: Authorization
+    prefix: Bearer
