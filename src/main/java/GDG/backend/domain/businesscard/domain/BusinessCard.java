@@ -92,4 +92,8 @@ public class BusinessCard {
                 isRepresentative
         );
     }
+
+    public void changeRepresentative(Boolean status) {
+        this.isRepresentative = status;
+    }
 }
