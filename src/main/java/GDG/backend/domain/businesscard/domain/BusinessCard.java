@@ -1,6 +1,7 @@
 package GDG.backend.domain.businesscard.domain;
 
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
+import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.user.domain.Gender;
 import GDG.backend.domain.user.domain.User;
 import jakarta.persistence.*;
@@ -9,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -42,6 +45,9 @@ public class BusinessCard {
 
     @Enumerated(STRING)
     private Gender gender;
+
+    @OneToMany(mappedBy = "businessCard", cascade = ALL)
+    private List<Link> links;
     private Boolean isRepresentative;
 
     @Builder
@@ -89,6 +95,7 @@ public class BusinessCard {
                 companyAddress,
                 birth,
                 gender,
+                links,
                 isRepresentative
         );
     }
