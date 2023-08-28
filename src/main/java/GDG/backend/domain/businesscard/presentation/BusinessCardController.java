@@ -2,6 +2,7 @@ package GDG.backend.domain.businesscard.presentation;
 
 import GDG.backend.domain.businesscard.presentation.dto.request.CreateBusinessCardRequest;
 import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardProfileResponse;
+import GDG.backend.domain.businesscard.presentation.dto.response.CreateBusinessCardResponse;
 import GDG.backend.domain.businesscard.presentation.dto.response.MyBusinessCardListResponse;
 import GDG.backend.domain.businesscard.service.BusinessCardService;
 import jakarta.validation.Valid;
@@ -16,7 +17,7 @@ public class BusinessCardController {
     private final BusinessCardService businessCardService;
 
     @PostMapping("/{userId}")
-    public BusinessCardProfileResponse createBusinessCard(@RequestBody @Valid CreateBusinessCardRequest createBusinessCardRequest, @PathVariable Long userId) {
+    public CreateBusinessCardResponse createBusinessCard(@RequestBody @Valid CreateBusinessCardRequest createBusinessCardRequest, @PathVariable Long userId) {
         return businessCardService.createBusinessCard(userId, createBusinessCardRequest);
     }
 
