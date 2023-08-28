@@ -11,4 +11,6 @@ public interface BusinessCardRepository extends JpaRepository<BusinessCard, Long
 
     Optional<BusinessCard> findByUserAndIsRepresentative(User user, Boolean isRepresentative);
     List<BusinessCard> findAllByUserAndIsRepresentative(User user, Boolean isRepresentative);
+
+    List<BusinessCard> findAllByUser(User user);
 }

@@ -4,14 +4,12 @@ import GDG.backend.domain.businesscard.domain.WorkType;
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
 import GDG.backend.domain.template.domain.Template;
-import GDG.backend.domain.template.domain.vo.TemplateInfoVO;
 import GDG.backend.domain.user.domain.Gender;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public record BusinessCardProfileResponse(
+public record CreateBusinessCardResponse(
         Long id,
         String name,
         String email,
@@ -22,14 +20,12 @@ public record BusinessCardProfileResponse(
         String companyAddress,
         LocalDate birth,
         Gender gender,
-        List<LinkInfoVO> links,
-        TemplateInfoVO template,
         Boolean isRepresentative
 ) {
-    public BusinessCardProfileResponse (BusinessCardInfoVO businessCardInfoVO, List<LinkInfoVO> links, TemplateInfoVO template) {
+    public CreateBusinessCardResponse (BusinessCardInfoVO businessCardInfoVO) {
         this(businessCardInfoVO.id(), businessCardInfoVO.name(), businessCardInfoVO.email(), businessCardInfoVO.workType(),
                 businessCardInfoVO.job(), businessCardInfoVO.position(), businessCardInfoVO.companyName(),
                 businessCardInfoVO.companyAddress(), businessCardInfoVO.birth(), businessCardInfoVO.gender(),
-                links, template, businessCardInfoVO.isRepresentative());
+                businessCardInfoVO.isRepresentative());
     }
 }
