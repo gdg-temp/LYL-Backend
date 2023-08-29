@@ -3,8 +3,10 @@ package GDG.backend.domain.businesscard.service;
 import GDG.backend.domain.businesscard.domain.BusinessCard;
 import GDG.backend.domain.businesscard.domain.repository.BusinessCardRepository;
 import GDG.backend.domain.businesscard.exception.BusinessCardNotFoundException;
-import GDG.backend.domain.businesscard.exception.MyBusinessCardListNotFound;
+import GDG.backend.domain.businesscard.exception.IsRepresentativeCardException;
+import GDG.backend.domain.businesscard.exception.MyBusinessCardListNotFoundException;
 import GDG.backend.domain.businesscard.exception.NotRepresentativeException;
+import GDG.backend.domain.businesscard.presentation.dto.request.ChangeProfileRequest;
 import GDG.backend.domain.businesscard.presentation.dto.request.ChangeRepresentativeRequest;
 import GDG.backend.domain.businesscard.presentation.dto.request.CreateBusinessCardRequest;
 import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardProfileResponse;
@@ -22,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Slf4j
@@ -52,6 +53,9 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 createBusinessCardRequest.gender()
         );
 
+        if (!businessCardRepository.existsByUser(currentUser)) {
+            businessCard.changeRepresentative();
+        }
         businessCardRepository.save(businessCard);
 
         return new CreateBusinessCardResponse(businessCard.getBusinessCardInfo());
@@ -59,16 +63,17 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     // 대표 명함 바꾸기
     @Transactional
-    public void changeRepresentative(ChangeRepresentativeRequest changeRepresentativeRequest) {
+    public void changeRepresentative(Long userId, ChangeRepresentativeRequest changeRepresentativeRequest) {
         BusinessCard preBusinessCard = queryBusinessCard(changeRepresentativeRequest.preBusinessCardId());
+        preBusinessCard.validUserIsHost(userId);
 
         if (!preBusinessCard.getIsRepresentative()) {
             throw NotRepresentativeException.EXCEPTION;
         }
 
-        preBusinessCard.changeRepresentative(FALSE);
+        preBusinessCard.changeRepresentative();
         BusinessCard changeBusinessCard = queryBusinessCard(changeRepresentativeRequest.changeBusinessCard());
-        changeBusinessCard.changeRepresentative(TRUE);
+        changeBusinessCard.changeRepresentative();
     }
 
     // 내 명함 리스트 조회하기
@@ -79,7 +84,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         BusinessCard representative = cards.stream()
                 .filter(BusinessCard::getIsRepresentative)
                 .findFirst()
-                .orElseThrow(() -> MyBusinessCardListNotFound.EXCEPTION);
+                .orElseThrow(() -> MyBusinessCardListNotFoundException.EXCEPTION);
 
         List<BusinessCard> otherCards = cards.stream()
                 .filter(card -> !card.getIsRepresentative())
@@ -113,6 +118,38 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         return new BusinessCardProfileResponse(businessCard.getBusinessCardInfo(),
                 businessCard.getLinks().stream().map(l -> l.getLinkInfoVO()).collect(Collectors.toList()),
                 businessCard.getTemplate().getTemplateInfo());
+    }
+
+     // 명함 정보 수정하기
+    public BusinessCardProfileResponse updateBusinessCardProfile(Long userId, Long cardId, ChangeProfileRequest changeProfileRequest) {
+        BusinessCard businessCard = queryBusinessCard(cardId);
+        businessCard.validUserIsHost(userId);
+
+        businessCard.changeProfile(
+                changeProfileRequest.name(),
+                changeProfileRequest.email(),
+                changeProfileRequest.workType(),
+                changeProfileRequest.job(),
+                changeProfileRequest.position(),
+                changeProfileRequest.companyName(),
+                changeProfileRequest.companyAddress()
+        );
+
+        return new BusinessCardProfileResponse(businessCard.getBusinessCardInfo(),
+                businessCard.getLinks().stream().map(l -> l.getLinkInfoVO()).collect(Collectors.toList()),
+                businessCard.getTemplate().getTemplateInfo());
+    }
+
+    // 명함 삭제하기
+    @Transactional
+    public void deleteBusinessCard(Long userId, Long cardId) {
+        BusinessCard businessCard = queryBusinessCard(cardId);
+        businessCard.validUserIsHost(userId);
+        if (businessCard.getIsRepresentative() == TRUE) {
+            throw IsRepresentativeCardException.EXCEPTION;
+        }
+
+        businessCardRepository.delete(businessCard);
     }
 
     @Override
