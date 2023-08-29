@@ -1,6 +1,7 @@
 package GDG.backend.domain.businesscard.domain;
 
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
+import GDG.backend.domain.businesscard.exception.UserNotHostException;
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.template.domain.Template;
 import GDG.backend.domain.user.domain.Gender;
@@ -20,6 +21,7 @@ import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -106,7 +108,24 @@ public class BusinessCard {
         );
     }
 
-    public void changeRepresentative(Boolean status) {
-        this.isRepresentative = status;
+    public void changeRepresentative() {
+        this.isRepresentative = !this.isRepresentative;
+    }
+
+    public void validUserIsHost(Long id) {
+        if (!user.getId().equals(id)) {
+            throw UserNotHostException.EXCEPTION;
+        }
+    }
+
+    public void changeProfile(String name, String email, WorkType workType, String job, String position, String companyName,
+                              String companyAddress) {
+        this.name = name;
+        this.email = email;
+        this.workType = workType;
+        this.job = job;
+        this.position = position;
+        this.companyName = companyName;
+        this.companyAddress = companyAddress;
     }
 }
