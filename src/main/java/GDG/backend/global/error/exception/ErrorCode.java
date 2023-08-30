@@ -29,6 +29,7 @@ public enum ErrorCode {
     Template_NOT_FOUND(404, "해당하는 정보의 링크를 찾을 수 없습니다."),
     LINK_NOT_FOUND(404, "해당하는 정보의 링크를 찾을 수 없습니다."),
     OAUTH_MEMBER_NOT_FOUND(404, "해당하는 로그인 정보를 찾을 수 없습니다."),
+    USER_INFO_NOT_FOUND(404, "회원가입을 진행해 주세요."),
     NO_ERROR_TYPE(404, "오류 발생"),
 
     /* 500 SERVER_ERROR */

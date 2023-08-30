@@ -1,6 +1,7 @@
 package GDG.backend.domain.oauth.domain;
 
 import GDG.backend.domain.oauth.domain.OauthId;
+import GDG.backend.domain.oauth.domain.vo.OauthMemberInfoVO;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,4 +23,11 @@ public class OauthMember {
     private OauthId oauthId;
     private String name;
     private String email;
+
+    public OauthMemberInfoVO getOauthMemberInfo() {
+        return new OauthMemberInfoVO(
+                email,
+                oauthId.getOauthServerType()
+        );
+    }
 }

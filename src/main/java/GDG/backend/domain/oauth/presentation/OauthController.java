@@ -1,6 +1,7 @@
 package GDG.backend.domain.oauth.presentation;
 
 import GDG.backend.domain.oauth.domain.OauthServerType;
+import GDG.backend.domain.oauth.presentation.dto.response.AuthTokensResponse;
 import GDG.backend.domain.oauth.service.OauthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,19 @@ public class OauthController {
     }
 
     // 추가
+//    @GetMapping("/login/{oauthServerType}")
+//    ResponseEntity<Long> login(
+//            @PathVariable OauthServerType oauthServerType,
+//            @RequestParam(value = "code") String code
+//    ) {
+//        Long login = oauthService.login(oauthServerType, code);
+//        return ResponseEntity.ok(login);
+//    }
     @GetMapping("/login/{oauthServerType}")
-    ResponseEntity<Long> login(
+    public AuthTokensResponse login(
             @PathVariable OauthServerType oauthServerType,
             @RequestParam(value = "code") String code
     ) {
-        Long login = oauthService.login(oauthServerType, code);
-        return ResponseEntity.ok(login);
+        return oauthService.login(oauthServerType, code);
     }
 }
