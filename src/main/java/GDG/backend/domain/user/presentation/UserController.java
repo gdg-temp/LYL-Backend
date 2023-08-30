@@ -1,6 +1,7 @@
 package GDG.backend.domain.user.presentation;
 
 import GDG.backend.domain.user.presentation.dto.request.SignUpUserRequest;
+import GDG.backend.domain.user.presentation.dto.response.TokenResponse;
 import GDG.backend.domain.user.presentation.dto.response.UserProfileResponse;
 import GDG.backend.domain.user.service.UserService;
 import jakarta.validation.Valid;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signUp")
-    public UserProfileResponse signUpUser(@RequestBody @Valid SignUpUserRequest signUpUserRequest) {
+    public TokenResponse signUpUser(@RequestBody @Valid SignUpUserRequest signUpUserRequest) {
         return userService.signUp(signUpUserRequest);
     }
 }

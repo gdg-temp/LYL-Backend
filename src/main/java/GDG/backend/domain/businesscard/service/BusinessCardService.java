@@ -15,6 +15,7 @@ import GDG.backend.domain.businesscard.presentation.dto.response.MyBusinessCardL
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
 import GDG.backend.domain.user.domain.User;
+import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +38,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     // 명함 생성하기
     @Transactional
-    public CreateBusinessCardResponse createBusinessCard(Long id, CreateBusinessCardRequest createBusinessCardRequest) {
-//        User currentUser = userUtils.getUserFromSecurityContext();
-        User currentUser = userUtils.getUserById(id);
+    public CreateBusinessCardResponse createBusinessCard(CreateBusinessCardRequest createBusinessCardRequest) {
+        User currentUser = userUtils.getUserFromSecurityContext();
         BusinessCard businessCard = BusinessCard.createBusinessCard(
                 currentUser,
                 createBusinessCardRequest.name(),
@@ -63,9 +63,10 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     // 대표 명함 바꾸기
     @Transactional
-    public void changeRepresentative(Long userId, ChangeRepresentativeRequest changeRepresentativeRequest) {
+    public void changeRepresentative(ChangeRepresentativeRequest changeRepresentativeRequest) {
         BusinessCard preBusinessCard = queryBusinessCard(changeRepresentativeRequest.preBusinessCardId());
-        preBusinessCard.validUserIsHost(userId);
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        preBusinessCard.validUserIsHost(currentUserId);
 
         if (!preBusinessCard.getIsRepresentative()) {
             throw NotRepresentativeException.EXCEPTION;
@@ -77,8 +78,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     }
 
     // 내 명함 리스트 조회하기
-    public MyBusinessCardListResponse getMyBusinessCardList(Long userId) {
-        User user = userUtils.getUserById(userId);
+    public MyBusinessCardListResponse getMyBusinessCardList() {
+        User user = userUtils.getUserFromSecurityContext();
         List<BusinessCard> cards = businessCardRepository.findAllByUser(user);
 
         BusinessCard representative = cards.stream()
@@ -121,9 +122,10 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     }
 
      // 명함 정보 수정하기
-    public BusinessCardProfileResponse updateBusinessCardProfile(Long userId, Long cardId, ChangeProfileRequest changeProfileRequest) {
+    public BusinessCardProfileResponse updateBusinessCardProfile(Long cardId, ChangeProfileRequest changeProfileRequest) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
         BusinessCard businessCard = queryBusinessCard(cardId);
-        businessCard.validUserIsHost(userId);
+        businessCard.validUserIsHost(currentUserId);
 
         businessCard.changeProfile(
                 changeProfileRequest.name(),
@@ -142,9 +144,10 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     // 명함 삭제하기
     @Transactional
-    public void deleteBusinessCard(Long userId, Long cardId) {
+    public void deleteBusinessCard(Long cardId) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
         BusinessCard businessCard = queryBusinessCard(cardId);
-        businessCard.validUserIsHost(userId);
+        businessCard.validUserIsHost(currentUserId);
         if (businessCard.getIsRepresentative() == TRUE) {
             throw IsRepresentativeCardException.EXCEPTION;
         }

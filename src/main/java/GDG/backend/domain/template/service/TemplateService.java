@@ -7,6 +7,7 @@ import GDG.backend.domain.template.domain.respository.TemplateRepository;
 import GDG.backend.domain.template.exception.TemplateNotFoundException;
 import GDG.backend.domain.template.presentation.dto.request.AddTemplateRequest;
 import GDG.backend.domain.template.presentation.dto.response.TemplateProfileResponse;
+import GDG.backend.global.utils.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,9 @@ public class TemplateService {
 
     @Transactional
     public TemplateProfileResponse addTemplate(Long cardId, AddTemplateRequest addTemplateRequest) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
         BusinessCard businessCard = businessCardServiceUtils.queryBusinessCard(cardId);
+        businessCard.validUserIsHost(currentUserId);
 
         Template template = Template.addTemplate(businessCard, addTemplateRequest.templateUrl());
 

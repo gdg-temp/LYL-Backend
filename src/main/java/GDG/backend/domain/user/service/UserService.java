@@ -7,6 +7,7 @@ import GDG.backend.domain.user.domain.User;
 import GDG.backend.domain.user.domain.repository.RefreshTokenRepository;
 import GDG.backend.domain.user.domain.repository.UserRepository;
 import GDG.backend.domain.user.presentation.dto.request.SignUpUserRequest;
+import GDG.backend.domain.user.presentation.dto.response.TokenResponse;
 import GDG.backend.domain.user.presentation.dto.response.UserProfileResponse;
 import GDG.backend.global.security.JwtTokenProvider;
 import GDG.backend.global.utils.user.UserUtils;
@@ -28,7 +29,7 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public UserProfileResponse signUp(SignUpUserRequest signUpUserRequest) {
+    public TokenResponse signUp(SignUpUserRequest signUpUserRequest) {
         OauthMember oauthMember = oauthMemberRepository.findByOauthId_OauthServerTypeAndEmail(signUpUserRequest.oauthServerType(), signUpUserRequest.email())
                 .orElseThrow(() -> OauthMemberNotFoundException.EXCEPTION);
 
@@ -43,6 +44,9 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserProfileResponse(user.getUserInfo());
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
+        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
+
+        return new TokenResponse(accessToken, refreshToken);
     }
 }

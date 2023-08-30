@@ -18,9 +18,9 @@ public class BusinessCardController {
 
     private final BusinessCardService businessCardService;
 
-    @PostMapping("/{userId}")
+    @PostMapping()
     public CreateBusinessCardResponse createBusinessCard(@RequestBody @Valid CreateBusinessCardRequest createBusinessCardRequest, @PathVariable Long userId) {
-        return businessCardService.createBusinessCard(userId, createBusinessCardRequest);
+        return businessCardService.createBusinessCard(createBusinessCardRequest);
     }
 
     @GetMapping("/{cardId}")
@@ -28,23 +28,23 @@ public class BusinessCardController {
         return businessCardService.getBusinessCardProfile(cardId);
     }
 
-    @GetMapping("/list/{userId}")
-    public MyBusinessCardListResponse getMyBusinessCardList(@PathVariable Long userId) {
-        return businessCardService.getMyBusinessCardList(userId);
+    @GetMapping("/list")
+    public MyBusinessCardListResponse getMyBusinessCardList() {
+        return businessCardService.getMyBusinessCardList();
     }
 
-    @PostMapping("/change/{userId}")
-    public void changeRepresentative(@RequestBody @Valid ChangeRepresentativeRequest changeRepresentativeRequest, @PathVariable Long userId) {
-        businessCardService.changeRepresentative(userId, changeRepresentativeRequest);
+    @PostMapping("/change")
+    public void changeRepresentative(@RequestBody @Valid ChangeRepresentativeRequest changeRepresentativeRequest) {
+        businessCardService.changeRepresentative(changeRepresentativeRequest);
     }
 
-    @PatchMapping("/profile/{userId}/{cardId}")
-    public BusinessCardProfileResponse changeProfile(@RequestBody @Valid ChangeProfileRequest changeProfileRequest, @PathVariable Long userId, @PathVariable Long cardId) {
-        return businessCardService.updateBusinessCardProfile(userId, cardId, changeProfileRequest);
+    @PatchMapping("/profile/{cardId}")
+    public BusinessCardProfileResponse changeProfile(@RequestBody @Valid ChangeProfileRequest changeProfileRequest, @PathVariable Long cardId) {
+        return businessCardService.updateBusinessCardProfile(cardId, changeProfileRequest);
     }
 
-    @DeleteMapping("/{userId}/{cardId}")
-    public void deleteBusinessCard(@PathVariable Long userId, @PathVariable Long cardId) {
-        businessCardService.deleteBusinessCard(userId, cardId);
+    @DeleteMapping("/{cardId}")
+    public void deleteBusinessCard(@PathVariable Long cardId) {
+        businessCardService.deleteBusinessCard(cardId);
     }
 }
