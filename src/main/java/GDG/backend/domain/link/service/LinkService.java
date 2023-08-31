@@ -7,6 +7,7 @@ import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.respository.LinkRepository;
 import GDG.backend.domain.link.exception.LinkNotFoundException;
 import GDG.backend.domain.link.presentation.dto.request.AddLinkRequest;
+import GDG.backend.domain.link.presentation.dto.request.UpdateLinkRequest;
 import GDG.backend.domain.link.presentation.dto.response.LinkProfileResponse;
 import GDG.backend.global.utils.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +27,7 @@ public class LinkService implements LinkServiceUtils{
     // 링크 추가하기
     @Transactional
     public LinkProfileResponse addLink(Long cardId, AddLinkRequest addLinkRequest) {
-        Long currentUserId = SecurityUtils.getCurrentUserId();
-        BusinessCard businessCard = businessCardServiceUtils.queryBusinessCard(cardId);
-        businessCard.validUserIsHost(currentUserId);
+        BusinessCard businessCard = businessCardServiceUtils.validHost(cardId);
 
         Link link = Link.addLink(
                 businessCard,
@@ -40,6 +39,28 @@ public class LinkService implements LinkServiceUtils{
         linkRepository.save(link);
 
         return new LinkProfileResponse(link.getLinkInfoVO());
+    }
+
+    // 링크 수정하기
+    @Transactional
+    public LinkProfileResponse updateLink(Long linkId, UpdateLinkRequest updateLinkRequest) {
+        Link link = queryLink(linkId);
+
+        businessCardServiceUtils.validHost(link.getBusinessCard().getId());
+
+        link.updateLink(updateLinkRequest.linkType(), updateLinkRequest.linkUrl(),updateLinkRequest.linkText());
+
+        return new LinkProfileResponse(link.getLinkInfoVO());
+    }
+
+    // 링크 삭제하기
+    @Transactional
+    public void deleteLink(Long linkId) {
+        Link link = queryLink(linkId);
+
+        businessCardServiceUtils.validHost(link.getBusinessCard().getId());
+
+        linkRepository.delete(link);
     }
     @Override
     public Link queryLink(Long linkId) {

@@ -123,9 +123,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
      // 명함 정보 수정하기
     public BusinessCardProfileResponse updateBusinessCardProfile(Long cardId, ChangeProfileRequest changeProfileRequest) {
-        Long currentUserId = SecurityUtils.getCurrentUserId();
-        BusinessCard businessCard = queryBusinessCard(cardId);
-        businessCard.validUserIsHost(currentUserId);
+        BusinessCard businessCard = validHost(cardId);
 
         businessCard.changeProfile(
                 changeProfileRequest.name(),
@@ -145,14 +143,20 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     // 명함 삭제하기
     @Transactional
     public void deleteBusinessCard(Long cardId) {
-        Long currentUserId = SecurityUtils.getCurrentUserId();
-        BusinessCard businessCard = queryBusinessCard(cardId);
-        businessCard.validUserIsHost(currentUserId);
+        BusinessCard businessCard = validHost(cardId);
         if (businessCard.getIsRepresentative() == TRUE) {
             throw IsRepresentativeCardException.EXCEPTION;
         }
 
         businessCardRepository.delete(businessCard);
+    }
+
+    @Override
+    public BusinessCard validHost(Long cardId) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        BusinessCard businessCard = queryBusinessCard(cardId);
+        businessCard.validUserIsHost(currentUserId);
+        return businessCard;
     }
 
     @Override
