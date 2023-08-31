@@ -5,4 +5,6 @@ import GDG.backend.domain.businesscard.domain.BusinessCard;
 public interface BusinessCardServiceUtils {
 
     BusinessCard queryBusinessCard(Long businessCardId);
+
+    BusinessCard validHost(Long cardId);
 }

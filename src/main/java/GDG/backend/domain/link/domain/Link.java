@@ -55,4 +55,10 @@ public class Link {
                 linkText
         );
     }
+
+    public void updateLink(LinkType linkType, String linkUrl, String linkText) {
+        this.linkType = linkType;
+        this.linkUrl = linkUrl;
+        this.linkText = linkText;
+    }
 }
