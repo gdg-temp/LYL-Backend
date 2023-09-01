@@ -19,7 +19,7 @@ public class BusinessCardController {
     private final BusinessCardService businessCardService;
 
     @PostMapping()
-    public CreateBusinessCardResponse createBusinessCard(@RequestBody @Valid CreateBusinessCardRequest createBusinessCardRequest, @PathVariable Long userId) {
+    public CreateBusinessCardResponse createBusinessCard(@RequestBody @Valid CreateBusinessCardRequest createBusinessCardRequest) {
         return businessCardService.createBusinessCard(createBusinessCardRequest);
     }
 

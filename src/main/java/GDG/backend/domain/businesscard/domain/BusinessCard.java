@@ -54,14 +54,12 @@ public class BusinessCard {
     @OneToMany(mappedBy = "businessCard", cascade = ALL)
     private List<Link> links;
 
-    @OneToOne(mappedBy = "businessCard", cascade = ALL)
-    @JoinColumn(name = "template_id")
-    private Template template;
+    private String templateURL;
     private Boolean isRepresentative;
 
     @Builder
     public BusinessCard(User user, String name, String email, WorkType workType, String job, String position, String companyName,
-                        String companyAddress, LocalDate birth, Gender gender, Boolean isRepresentative) {
+                        String companyAddress, LocalDate birth, Gender gender, String templateURL,  Boolean isRepresentative) {
         this.user = user;
         this.name = name;
         this.email = email;
@@ -71,12 +69,13 @@ public class BusinessCard {
         this.companyName = companyName;
         this.companyAddress = companyAddress;
         this.birth = birth;
+        this.templateURL = templateURL;
         this.gender = gender;
         this.isRepresentative = isRepresentative;
     }
 
     public static BusinessCard createBusinessCard(User user, String name, String email, WorkType workType, String job, String position, String companyName,
-                                                  String companyAddress, LocalDate birth, Gender gender) {
+                                                  String companyAddress, LocalDate birth, String templateURL,  Gender gender) {
         return builder()
                 .user(user)
                 .name(name)
@@ -88,6 +87,7 @@ public class BusinessCard {
                 .companyAddress(companyAddress)
                 .birth(birth)
                 .gender(gender)
+                .templateURL(templateURL)
                 .isRepresentative(FALSE)
                 .build();
     }
@@ -104,6 +104,7 @@ public class BusinessCard {
                 companyAddress,
                 birth,
                 gender,
+                templateURL,
                 isRepresentative
         );
     }
