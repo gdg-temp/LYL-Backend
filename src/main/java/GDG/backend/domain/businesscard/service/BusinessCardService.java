@@ -50,6 +50,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 createBusinessCardRequest.companyName(),
                 createBusinessCardRequest.companyAddress(),
                 createBusinessCardRequest.birth(),
+                createBusinessCardRequest.templateURL(),
                 createBusinessCardRequest.gender()
         );
 
@@ -106,8 +107,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
         return new BusinessCardProfileResponse(
                 card.getBusinessCardInfo(),
-                linkInfos,
-                card.getTemplate().getTemplateInfo()
+                linkInfos
         );
     }
 
@@ -117,8 +117,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         BusinessCard businessCard = queryBusinessCard(cardId);
 
         return new BusinessCardProfileResponse(businessCard.getBusinessCardInfo(),
-                businessCard.getLinks().stream().map(l -> l.getLinkInfoVO()).collect(Collectors.toList()),
-                businessCard.getTemplate().getTemplateInfo());
+                businessCard.getLinks().stream().map(l -> l.getLinkInfoVO()).collect(Collectors.toList()));
     }
 
      // 명함 정보 수정하기
@@ -136,8 +135,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         );
 
         return new BusinessCardProfileResponse(businessCard.getBusinessCardInfo(),
-                businessCard.getLinks().stream().map(l -> l.getLinkInfoVO()).collect(Collectors.toList()),
-                businessCard.getTemplate().getTemplateInfo());
+                businessCard.getLinks().stream().map(l -> l.getLinkInfoVO()).collect(Collectors.toList()));
     }
 
     // 명함 삭제하기

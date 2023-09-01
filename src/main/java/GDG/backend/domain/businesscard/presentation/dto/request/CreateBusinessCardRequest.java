@@ -14,6 +14,7 @@ public record CreateBusinessCardRequest(
         String companyName,
         String companyAddress,
         LocalDate birth,
+        String templateURL,
         Gender gender
 ) {
 }

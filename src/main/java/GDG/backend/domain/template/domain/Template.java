@@ -22,19 +22,13 @@ public class Template {
 
     private String templateUrl;
 
-    @OneToOne
-    @JoinColumn(name = "business_card_id")
-    private BusinessCard businessCard;
-
     @Builder
-    public Template(BusinessCard businessCard,String templateUrl) {
-        this.businessCard = businessCard;
+    public Template(String templateUrl) {
         this.templateUrl = templateUrl;
     }
 
-    public static Template addTemplate(BusinessCard businessCard, String templateUrl) {
+    public static Template addTemplate(String templateUrl) {
         return builder()
-                .businessCard(businessCard)
                 .templateUrl(templateUrl)
                 .build();
     }
@@ -44,5 +38,9 @@ public class Template {
                 id,
                 templateUrl
         );
+    }
+
+    public void updateTemplate(String templateUrl) {
+        this.templateUrl = templateUrl;
     }
 }

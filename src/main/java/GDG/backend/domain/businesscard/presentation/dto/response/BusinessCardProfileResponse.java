@@ -22,14 +22,14 @@ public record BusinessCardProfileResponse(
         String companyAddress,
         LocalDate birth,
         Gender gender,
+        String templateURL,
         List<LinkInfoVO> links,
-        TemplateInfoVO template,
         Boolean isRepresentative
 ) {
-    public BusinessCardProfileResponse (BusinessCardInfoVO businessCardInfoVO, List<LinkInfoVO> links, TemplateInfoVO template) {
+    public BusinessCardProfileResponse (BusinessCardInfoVO businessCardInfoVO, List<LinkInfoVO> links) {
         this(businessCardInfoVO.id(), businessCardInfoVO.name(), businessCardInfoVO.email(), businessCardInfoVO.workType(),
                 businessCardInfoVO.job(), businessCardInfoVO.position(), businessCardInfoVO.companyName(),
                 businessCardInfoVO.companyAddress(), businessCardInfoVO.birth(), businessCardInfoVO.gender(),
-                links, template, businessCardInfoVO.isRepresentative());
+                businessCardInfoVO.templateURL(), links, businessCardInfoVO.isRepresentative());
     }
 }

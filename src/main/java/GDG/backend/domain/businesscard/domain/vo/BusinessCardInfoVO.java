@@ -20,6 +20,7 @@ public record BusinessCardInfoVO(
         String companyAddress,
         LocalDate birth,
         Gender gender,
+        String templateURL,
         Boolean isRepresentative
 ) {
 }

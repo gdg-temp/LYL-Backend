@@ -20,12 +20,13 @@ public record CreateBusinessCardResponse(
         String companyAddress,
         LocalDate birth,
         Gender gender,
+        String templateURL,
         Boolean isRepresentative
 ) {
     public CreateBusinessCardResponse (BusinessCardInfoVO businessCardInfoVO) {
         this(businessCardInfoVO.id(), businessCardInfoVO.name(), businessCardInfoVO.email(), businessCardInfoVO.workType(),
                 businessCardInfoVO.job(), businessCardInfoVO.position(), businessCardInfoVO.companyName(),
                 businessCardInfoVO.companyAddress(), businessCardInfoVO.birth(), businessCardInfoVO.gender(),
-                businessCardInfoVO.isRepresentative());
+                businessCardInfoVO.templateURL(), businessCardInfoVO.isRepresentative());
     }
 }
