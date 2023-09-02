@@ -9,6 +9,6 @@ public class TemplateNotFoundException extends CardException {
 
 
     private TemplateNotFoundException() {
-        super(ErrorCode.Template_NOT_FOUND);
+        super(ErrorCode.TEMPLATE_NOT_FOUND);
     }
 }
