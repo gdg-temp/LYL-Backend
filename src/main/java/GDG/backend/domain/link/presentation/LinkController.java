@@ -29,4 +29,9 @@ public class LinkController {
     public void deleteLink(@PathVariable Long linkId) {
         linkService.deleteLink(linkId);
     }
+
+    @GetMapping("/{linkId}")
+    public LinkProfileResponse getLinkProfile(@PathVariable Long linkId) {
+        return linkService.getLinkProfile(linkId);
+    }
 }
