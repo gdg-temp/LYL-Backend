@@ -62,6 +62,12 @@ public class LinkService implements LinkServiceUtils{
 
         linkRepository.delete(link);
     }
+
+    public LinkProfileResponse getLinkProfile(Long linkId) {
+        Link link = queryLink(linkId);
+
+        return new LinkProfileResponse(link.getLinkInfoVO());
+    }
     @Override
     public Link queryLink(Long linkId) {
         return linkRepository.findById(linkId).orElseThrow(() -> LinkNotFoundException.EXCEPTION);
