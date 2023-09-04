@@ -13,3 +13,26 @@ spring:
         dialect:
   main:
     allow-bean-definition-overriding: true
+
+auth:
+  jwt:
+    secretKey: TGluayBZb3VyIExpbmsgUHJvamVjdA==
+    accessExp: 1800
+    refreshExp: 50400
+    header: Authorization
+    prefix: Bearer
+
+naver-cloud-sms:
+  accessKey: "LDFGnmvSaJfhwz8gr4rQ"
+  secretKey: "OaWqJC2fzYxlEBJlSaaqH5hSZTsJqmRayp1Ggmz6"
+  serviceId: "ncp:sms:kr:314085489615:lyl"
+  senderPhone: "01022479135"
+
+oauth:
+  kakao:
+    client-id: c7454e9461bdc8c5f5ff50679823e178
+    redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+    client-secret: A0oC9c3wIEND8Dib6q50ITDZ6xUQLskY
+    scope:
+      - profile_nickname
+      - account_email

@@ -23,14 +23,22 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable().cors().disable();
+//        http.authorizeRequests()
+//                .requestMatchers("/**").permitAll(); // 모든 경로에 대하여 인증을 요구하지 않습니다.
+//
+//        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
+//                UsernamePasswordAuthenticationFilter.class);
+
         http
-                .csrf().disable();
-        http.authorizeRequests()
-                .requestMatchers("/**").permitAll(); // 모든 경로에 대하여 인증을 요구하지 않습니다.
-
-        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class);
-
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/sms/**").permitAll()
+                        .requestMatchers("/api/oauth/**").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
