@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Link {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "link")
+    @Column(name = "link_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
