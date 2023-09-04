@@ -16,6 +16,8 @@ public enum ErrorCode {
     EXIST_CARD_STORAGE(400, "해당하는 명함은 이미 저장하였습니다."),
     NOT_REPRESENTATIVE(400, "해당하는 명함은 대표 명함이 아닙니다."),
     IS_REPRESENTATIVE_CARD(400, "해당하는 명함은 대표 명함으로 삭제할 수 없습니다."),
+    IS_NOT_VERIFICATION(400, "번호 인증에 실패했습니다."),
+    NOT_EXIST_PHONE_NUM(400, "인증할 수 없는 번호입니다."),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_TOKEN(401, "토큰이 유효하지 않습니다."),
@@ -33,6 +35,8 @@ public enum ErrorCode {
     LINK_NOT_FOUND(404, "해당하는 정보의 링크를 찾을 수 없습니다."),
     OAUTH_MEMBER_NOT_FOUND(404, "해당하는 로그인 정보를 찾을 수 없습니다."),
     USER_INFO_NOT_FOUND(404, "회원가입을 진행해 주세요."),
+    SMS_NOT_FOUND(404, "번호를 다시 입력해주세요"),
+    AUTHENTICATION_TIME_OUT(404, "인증 시간이 만료되었습니다."),
     NO_ERROR_TYPE(404, "오류 발생"),
 
     /* 500 SERVER_ERROR */
