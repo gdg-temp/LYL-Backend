@@ -43,6 +43,8 @@ dependencies {
 	implementation group: 'io.netty', name: 'netty-all', version: '4.1.69.Final'
 	implementation group: 'io.netty', name: 'netty-resolver-dns-native-macos', version: '4.1.69.Final'
 
+	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
 }
 
 tasks.named('test') {
