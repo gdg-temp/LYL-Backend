@@ -48,5 +48,6 @@ public class Sms {
 
     public void changeSmsKey(String smsKey) {
         this.smsKey = smsKey;
+        this.now = LocalDateTime.now();
     }
 }
