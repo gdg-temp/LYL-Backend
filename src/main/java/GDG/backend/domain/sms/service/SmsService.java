@@ -18,7 +18,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
@@ -44,7 +43,7 @@ import static java.lang.Boolean.TRUE;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class SmsService {
+public class SmsService implements SmsUtils {
 
     private final SmsConfig smsConfig;
     private final SmsRepository smsRepository;
@@ -86,10 +85,8 @@ public class SmsService {
 
         Optional<Sms> optionalSms = smsRepository.findByToPhoneNum(messageDto.to());
         if (!optionalSms.isPresent()) {
-            log.info("없어");
             Sms sms = Sms.createSms(messageDto.to(), smsKey);
             smsRepository.save(sms);
-            log.info("저장");
         }
         else {
             Sms sms = optionalSms.get();
@@ -158,4 +155,11 @@ public class SmsService {
         sms.changeVerification(TRUE);
     }
 
+    @Override
+    public void checkPhoneNum(String phoneNum) {
+        Sms sms = smsRepository.findByToPhoneNum(phoneNum).orElseThrow(() -> SmsNotFoundException.EXCEPTION);
+        if (!sms.getIsVerification()) {
+            throw IsNotVerificationException.EXCEPTION;
+        }
+    }
 }
