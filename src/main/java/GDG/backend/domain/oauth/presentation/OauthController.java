@@ -1,8 +1,10 @@
 package GDG.backend.domain.oauth.presentation;
 
 import GDG.backend.domain.oauth.domain.OauthServerType;
+import GDG.backend.domain.oauth.presentation.dto.request.TokenRefreshRequest;
 import GDG.backend.domain.oauth.presentation.dto.response.AuthTokensResponse;
 import GDG.backend.domain.oauth.service.OauthService;
+import GDG.backend.domain.user.presentation.dto.response.TokenResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -42,5 +44,10 @@ public class OauthController {
             @RequestParam(value = "code") String code
     ) {
         return oauthService.login(oauthServerType, code);
+    }
+
+    @PostMapping("/refresh")
+    public TokenResponse refreshingToken(@RequestBody TokenRefreshRequest tokenRefreshRequest) {
+        return oauthService.tokenRefresh(tokenRefreshRequest.refreshToken());
     }
 }

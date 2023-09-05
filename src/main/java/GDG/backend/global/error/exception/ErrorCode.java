@@ -17,7 +17,7 @@ public enum ErrorCode {
     NOT_REPRESENTATIVE(400, "해당하는 명함은 대표 명함이 아닙니다."),
     IS_REPRESENTATIVE_CARD(400, "해당하는 명함은 대표 명함으로 삭제할 수 없습니다."),
     IS_NOT_VERIFICATION(400, "번호 인증에 실패했습니다."),
-    NOT_EXIST_PHONE_NUM(400, "인증할 수 없는 번호입니다."),
+    NOT_EXIST_PHONE_NUM(400, "번호 인증을 진행해주세요."),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_TOKEN(401, "토큰이 유효하지 않습니다."),
