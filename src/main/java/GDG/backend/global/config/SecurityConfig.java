@@ -21,20 +21,19 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final ObjectMapper objectMapper;
 
+    private static final String[] SwaggerPatterns = {
+            "/swagger-ui/**", "/v3/api-docs/**",
+    };
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable();
-//        http.authorizeRequests()
-//                .requestMatchers("/**").permitAll(); // 모든 경로에 대하여 인증을 요구하지 않습니다.
-//
-//        http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
-//                UsernamePasswordAuthenticationFilter.class);
+        http.formLogin().disable().cors().and().csrf().disable();
 
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/sms/**").permitAll()
                         .requestMatchers("/api/oauth/**").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
+                        .requestMatchers(SwaggerPatterns).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider),
