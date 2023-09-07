@@ -2,6 +2,7 @@ package GDG.backend.domain.businesscard.presentation.dto.request;
 
 import GDG.backend.domain.businesscard.domain.WorkType;
 import GDG.backend.domain.user.domain.Gender;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ public record CreateBusinessCardRequest(
         String companyName,
         String companyAddress,
         LocalDate birth,
+        @Schema(description = "템플릿 이미지 URL")
         String templateURL,
         Gender gender
 ) {

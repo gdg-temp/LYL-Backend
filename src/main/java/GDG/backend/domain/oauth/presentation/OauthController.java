@@ -5,12 +5,16 @@ import GDG.backend.domain.oauth.presentation.dto.request.TokenRefreshRequest;
 import GDG.backend.domain.oauth.presentation.dto.response.AuthTokensResponse;
 import GDG.backend.domain.oauth.service.OauthService;
 import GDG.backend.domain.user.presentation.dto.response.TokenResponse;
-import jakarta.servlet.http.HttpServletResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
+
+@Tag(name = "인증", description = "로그인 관련 API")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/oauth")
@@ -18,34 +22,19 @@ public class OauthController {
 
     private final OauthService oauthService;
 
-    @SneakyThrows
-    @GetMapping("/{oauthServerType}")
-    ResponseEntity<Void> redirectAuthCodeRequestUrl(
-            @PathVariable OauthServerType oauthServerType,
-            HttpServletResponse response
-    ) {
-        String redirectUrl = oauthService.getAuthCodeRequestUrl(oauthServerType);
-        response.sendRedirect(redirectUrl);
-        return ResponseEntity.ok().build();
-    }
-
-    // 추가
-//    @GetMapping("/login/{oauthServerType}")
-//    ResponseEntity<Long> login(
-//            @PathVariable OauthServerType oauthServerType,
-//            @RequestParam(value = "code") String code
-//    ) {
-//        Long login = oauthService.login(oauthServerType, code);
-//        return ResponseEntity.ok(login);
-//    }
+    @SecurityRequirements
+    @Operation(summary = "소셜 로그인")
     @GetMapping("/login/{oauthServerType}")
     public AuthTokensResponse login(
+            @Parameter(description = "소셜 로그인 Type", in = PATH)
             @PathVariable OauthServerType oauthServerType,
             @RequestParam(value = "code") String code
     ) {
         return oauthService.login(oauthServerType, code);
     }
 
+    @SecurityRequirements
+    @Operation(summary = "Token 재발급")
     @PostMapping("/refresh")
     public TokenResponse refreshingToken(@RequestBody TokenRefreshRequest tokenRefreshRequest) {
         return oauthService.tokenRefresh(tokenRefreshRequest.refreshToken());

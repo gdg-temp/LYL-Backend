@@ -1,4 +1,4 @@
-package GDG.backend.domain.sms.present.dto;
+package GDG.backend.domain.sms.presentation.dto;
 
 import java.util.List;
 

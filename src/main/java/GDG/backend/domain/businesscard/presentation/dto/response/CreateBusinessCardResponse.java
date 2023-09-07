@@ -5,11 +5,13 @@ import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
 import GDG.backend.domain.template.domain.Template;
 import GDG.backend.domain.user.domain.Gender;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public record CreateBusinessCardResponse(
+        @Schema(description = "명함 Id")
         Long id,
         String name,
         String email,
@@ -21,6 +23,7 @@ public record CreateBusinessCardResponse(
         LocalDate birth,
         Gender gender,
         String templateURL,
+        @Schema(description = "대표 명함 확인")
         Boolean isRepresentative
 ) {
     public CreateBusinessCardResponse (BusinessCardInfoVO businessCardInfoVO) {
