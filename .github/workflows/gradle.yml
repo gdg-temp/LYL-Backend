@@ -21,11 +21,23 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+        
     - name: Add permission
       run: chmod +x gradlew
+      
     - name: Build with Gradle
       uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
       with:
         arguments: |
             build -x test
             --no-daemon
+
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
