@@ -3,8 +3,6 @@ package GDG.backend.domain.businesscard.domain;
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
 import GDG.backend.domain.businesscard.exception.UserNotHostException;
 import GDG.backend.domain.link.domain.Link;
-import GDG.backend.domain.template.domain.Template;
-import GDG.backend.domain.user.domain.Gender;
 import GDG.backend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -13,15 +11,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -48,9 +43,6 @@ public class BusinessCard {
     private String companyAddress;
     private LocalDate birth;
 
-    @Enumerated(STRING)
-    private Gender gender;
-
     @OneToMany(mappedBy = "businessCard", cascade = ALL)
     private List<Link> links;
 
@@ -59,7 +51,7 @@ public class BusinessCard {
 
     @Builder
     public BusinessCard(User user, String name, String email, WorkType workType, String job, String position, String companyName,
-                        String companyAddress, LocalDate birth, Gender gender, String templateURL,  Boolean isRepresentative) {
+                        String companyAddress, LocalDate birth, String templateURL,  Boolean isRepresentative) {
         this.user = user;
         this.name = name;
         this.email = email;
@@ -70,12 +62,11 @@ public class BusinessCard {
         this.companyAddress = companyAddress;
         this.birth = birth;
         this.templateURL = templateURL;
-        this.gender = gender;
         this.isRepresentative = isRepresentative;
     }
 
     public static BusinessCard createBusinessCard(User user, String name, String email, WorkType workType, String job, String position, String companyName,
-                                                  String companyAddress, LocalDate birth, String templateURL,  Gender gender) {
+                                                  String companyAddress, LocalDate birth, String templateURL) {
         return builder()
                 .user(user)
                 .name(name)
@@ -86,7 +77,6 @@ public class BusinessCard {
                 .companyName(companyName)
                 .companyAddress(companyAddress)
                 .birth(birth)
-                .gender(gender)
                 .templateURL(templateURL)
                 .isRepresentative(FALSE)
                 .build();
@@ -103,7 +93,6 @@ public class BusinessCard {
                 companyName,
                 companyAddress,
                 birth,
-                gender,
                 templateURL,
                 isRepresentative
         );

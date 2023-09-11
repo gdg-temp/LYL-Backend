@@ -2,13 +2,9 @@ package GDG.backend.domain.businesscard.presentation.dto.response;
 
 import GDG.backend.domain.businesscard.domain.WorkType;
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
-import GDG.backend.domain.link.domain.vo.LinkInfoVO;
-import GDG.backend.domain.template.domain.Template;
-import GDG.backend.domain.user.domain.Gender;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public record CreateBusinessCardResponse(
         @Schema(description = "명함 Id")
@@ -21,7 +17,6 @@ public record CreateBusinessCardResponse(
         String companyName,
         String companyAddress,
         LocalDate birth,
-        Gender gender,
         String templateURL,
         @Schema(description = "대표 명함 확인")
         Boolean isRepresentative
@@ -29,7 +24,7 @@ public record CreateBusinessCardResponse(
     public CreateBusinessCardResponse (BusinessCardInfoVO businessCardInfoVO) {
         this(businessCardInfoVO.id(), businessCardInfoVO.name(), businessCardInfoVO.email(), businessCardInfoVO.workType(),
                 businessCardInfoVO.job(), businessCardInfoVO.position(), businessCardInfoVO.companyName(),
-                businessCardInfoVO.companyAddress(), businessCardInfoVO.birth(), businessCardInfoVO.gender(),
-                businessCardInfoVO.templateURL(), businessCardInfoVO.isRepresentative());
+                businessCardInfoVO.companyAddress(), businessCardInfoVO.birth(), businessCardInfoVO.templateURL(),
+                businessCardInfoVO.isRepresentative());
     }
 }

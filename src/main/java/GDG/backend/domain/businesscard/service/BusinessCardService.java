@@ -50,8 +50,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 createBusinessCardRequest.companyName(),
                 createBusinessCardRequest.companyAddress(),
                 createBusinessCardRequest.birth(),
-                createBusinessCardRequest.templateURL(),
-                createBusinessCardRequest.gender()
+                createBusinessCardRequest.templateURL()
         );
 
         if (!businessCardRepository.existsByUser(currentUser)) {
@@ -81,6 +80,11 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     // 내 명함 리스트 조회하기
     public MyBusinessCardListResponse getMyBusinessCardList() {
         User user = userUtils.getUserFromSecurityContext();
+        return getMyBusinessCardListResponse(user);
+    }
+
+    @Override
+    public MyBusinessCardListResponse getMyBusinessCardListResponse(User user) {
         List<BusinessCard> cards = businessCardRepository.findAllByUser(user);
 
         BusinessCard representative = cards.stream()
