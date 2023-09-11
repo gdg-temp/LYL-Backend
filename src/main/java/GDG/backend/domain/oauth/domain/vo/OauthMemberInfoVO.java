@@ -4,6 +4,7 @@ import GDG.backend.domain.oauth.domain.OauthServerType;
 
 public record OauthMemberInfoVO(
         String email,
+        String name,
         OauthServerType oauthServerType
 ) {
 }
