@@ -1,7 +1,7 @@
 package GDG.backend.global.oauth.kakao.dto;
 
-import GDG.backend.domain.oauth.domain.OauthId;
 import GDG.backend.domain.oauth.domain.OauthMember;
+import GDG.backend.domain.oauth.domain.OauthServerType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -19,9 +19,9 @@ public record KakaoMemberResponse(
 
     public OauthMember toDomain() {
         return OauthMember.builder()
-                .oauthId(new OauthId(String.valueOf(id), KAKAO))
                 .name(kakaoAccount.profile.nickname)
                 .email(kakaoAccount.email)
+                .oauthServerType(KAKAO)
                 .build();
     }
 

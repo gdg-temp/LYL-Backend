@@ -11,6 +11,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -133,6 +134,15 @@ public class JwtTokenProvider {
             throw RefreshTokenExpiredException.EXCEPTION;
         }
         throw InvalidTokenException.EXCEPTION;
+    }
+
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+        response.setHeader("Authorization", accessToken);
+    }
+
+    // RefreshToken 헤더 설정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
+        response.setHeader("RefreshToken", refreshToken);
     }
 
     public Long getRefreshTokenTTlSecond() {

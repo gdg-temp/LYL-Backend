@@ -1,27 +1,31 @@
 package GDG.backend.domain.oauth.service;
 
+import GDG.backend.domain.businesscard.service.BusinessCardServiceUtils;
 import GDG.backend.domain.oauth.authcode.AuthCodeRequestUrlProviderComposite;
 import GDG.backend.domain.oauth.client.OauthMemberClientComposite;
 import GDG.backend.domain.oauth.domain.OauthMember;
 import GDG.backend.domain.oauth.domain.OauthServerType;
 import GDG.backend.domain.oauth.domain.repository.OauthMemberRepository;
-import GDG.backend.domain.oauth.exception.UserInfoNotFoundException;
-import GDG.backend.domain.oauth.presentation.dto.response.AuthTokensResponse;
+import GDG.backend.domain.oauth.presentation.dto.response.OauthLoginResponse;
 import GDG.backend.domain.user.domain.RefreshToken;
 import GDG.backend.domain.user.domain.User;
 import GDG.backend.domain.user.domain.repository.RefreshTokenRepository;
 import GDG.backend.domain.user.domain.repository.UserRepository;
-import GDG.backend.domain.user.presentation.dto.response.TokenResponse;
+import GDG.backend.domain.user.presentation.dto.response.SignUpResponse;
 import GDG.backend.global.exception.InvalidTokenException;
 import GDG.backend.global.exception.RefreshTokenExpiredException;
 import GDG.backend.global.security.JwtTokenProvider;
 import GDG.backend.global.utils.user.UserUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 @Service
 @RequiredArgsConstructor
@@ -35,30 +39,35 @@ public class OauthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserUtils userUtils;
+    private final BusinessCardServiceUtils businessCardServiceUtils;
 
     public String getAuthCodeRequestUrl(OauthServerType oauthServerType) {
         return authCodeRequestUrlProviderComposite.provide(oauthServerType);
     }
 
     // 추가
-    public AuthTokensResponse login(OauthServerType oauthServerType, String authCode) {
+    public OauthLoginResponse login(OauthServerType oauthServerType, String authCode, HttpServletResponse response) {
         OauthMember oauthMember = oauthMemberClientComposite.fetch(oauthServerType, authCode);
-        OauthMember saved = oauthMemberRepository.findByOauthId(oauthMember.getOauthId())
+        OauthMember saved = oauthMemberRepository.findByOauthServerTypeAndEmail(oauthMember.getOauthServerType(), oauthMember.getEmail())
                 .orElseGet(() -> oauthMemberRepository.save(oauthMember));
-        Optional<User> user = userRepository.findByEmail(saved.getEmail());
-        if (!user.isPresent()) {
-            return new AuthTokensResponse(null, null, saved.getOauthMemberInfo());
+        Optional<User> savedUser = userRepository.findByOauthServerTypeAndEmail(saved.getOauthServerType(), saved.getEmail());
+        if (!savedUser.isPresent()) {
+            return new OauthLoginResponse(saved.getOauthMemberInfo(), TRUE);
         }
+
         String accessToken = jwtTokenProvider.generateAccessToken(saved.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(saved.getId());
 
-        refreshTokenRepository.save(new RefreshToken(refreshToken, user.get().getId()));
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
 
-        return new AuthTokensResponse(accessToken, refreshToken, saved.getOauthMemberInfo());
+        refreshTokenRepository.save(new RefreshToken(refreshToken, savedUser.get().getId()));
+
+        return new OauthLoginResponse(saved.getOauthMemberInfo(), FALSE);
     }
 
     @Transactional
-    public TokenResponse tokenRefresh(String requestRefreshToken) {
+    public void tokenRefresh(String requestRefreshToken) {
         RefreshToken getRefreshToken = refreshTokenRepository.findByRefreshToken(requestRefreshToken).orElseThrow(() -> RefreshTokenExpiredException.EXCEPTION);
 
         Long userId = jwtTokenProvider.parseRefreshToken(requestRefreshToken);
@@ -73,7 +82,5 @@ public class OauthService {
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
 
         getRefreshToken.updateRefreshToken(refreshToken);
-
-        return new TokenResponse(accessToken, refreshToken);
     }
 }

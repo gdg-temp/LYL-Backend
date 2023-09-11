@@ -31,7 +31,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/sms/**").permitAll()
-                        .requestMatchers("/api/oauth/**").permitAll()
+                        .requestMatchers("/api/login/{oauthServerType}").permitAll()
+                        .requestMatchers("/api/refresh").permitAll()
                         .requestMatchers("/api/user/**").permitAll()
                         .requestMatchers(SwaggerPatterns).permitAll()
                         .anyRequest().authenticated()

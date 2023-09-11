@@ -1,10 +1,11 @@
 package GDG.backend.domain.oauth.domain;
 
-import GDG.backend.domain.oauth.domain.OauthId;
 import GDG.backend.domain.oauth.domain.vo.OauthMemberInfoVO;
+import GDG.backend.domain.oauth.domain.OauthServerType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -19,15 +20,17 @@ public class OauthMember {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Embedded
-    private OauthId oauthId;
+    @Enumerated(STRING)
+    private OauthServerType oauthServerType;
+
     private String name;
     private String email;
 
     public OauthMemberInfoVO getOauthMemberInfo() {
         return new OauthMemberInfoVO(
                 email,
-                oauthId.getOauthServerType()
+                name,
+                oauthServerType
         );
     }
 }
