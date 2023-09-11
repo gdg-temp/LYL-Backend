@@ -9,13 +9,18 @@ import GDG.backend.domain.user.domain.User;
 import GDG.backend.domain.user.domain.repository.RefreshTokenRepository;
 import GDG.backend.domain.user.domain.repository.UserRepository;
 import GDG.backend.domain.user.presentation.dto.request.SignUpUserRequest;
-import GDG.backend.domain.user.presentation.dto.response.TokenResponse;
+import GDG.backend.domain.user.presentation.dto.response.SignUpResponse;
+import GDG.backend.domain.user.presentation.dto.response.UserProfileResponse;
 import GDG.backend.global.security.JwtTokenProvider;
+import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static java.lang.Boolean.FALSE;
 
 @Slf4j
 @Service
@@ -31,18 +36,10 @@ public class UserService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public TokenResponse signUp(SignUpUserRequest signUpUserRequest) {
-        OauthMember oauthMember = oauthMemberRepository.findByOauthId_OauthServerTypeAndEmail(signUpUserRequest.oauthServerType(), signUpUserRequest.email())
-                .orElseThrow(() -> OauthMemberNotFoundException.EXCEPTION);
-
-        smsUtils.checkPhoneNum(signUpUserRequest.phoneNum());
-
+    public SignUpResponse signUp(SignUpUserRequest signUpUserRequest, HttpServletResponse response) {
         User user = User.createUser(
-                oauthMember.getName(),
-                signUpUserRequest.phoneNum(),
+                signUpUserRequest.name(),
                 signUpUserRequest.email(),
-                signUpUserRequest.birth(),
-                signUpUserRequest.gender(),
                 signUpUserRequest.oauthServerType()
         );
 
@@ -51,7 +48,22 @@ public class UserService {
         String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
 
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
+
         refreshTokenRepository.save(new RefreshToken(refreshToken, user.getId()));
-        return new TokenResponse(accessToken, refreshToken);
+        return new SignUpResponse(user.getUserInfo(), FALSE);
+    }
+
+    public UserProfileResponse getUserProfile() {
+        User user = userUtils.getUserFromSecurityContext();
+
+        return new UserProfileResponse(user.getUserInfo());
+    }
+
+    @Transactional
+    public void logout() {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        refreshTokenRepository.deleteByUserId(currentUserId);
     }
 }

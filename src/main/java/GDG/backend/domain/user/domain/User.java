@@ -29,12 +29,7 @@ public class User extends BaseEntity {
     private Long id;
 
     private String userName;
-    private String phoneNum;
     private String email;
-    private LocalDate birth;
-
-    @Enumerated(STRING)
-    private Gender gender;
 
     @Enumerated(STRING)
     private OauthServerType oauthServerType;
@@ -43,22 +38,16 @@ public class User extends BaseEntity {
     private List<BusinessCard> businessCardList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String phoneNum, String email, LocalDate birth, Gender gender, OauthServerType oauthServerType) {
+    public User(String userName, String email, OauthServerType oauthServerType) {
         this.userName = userName;
-        this.phoneNum = phoneNum;
         this.email = email;
-        this.birth = birth;
-        this.gender = gender;
         this.oauthServerType = oauthServerType;
     }
 
-    public static User createUser(String userName, String phoneNum, String email, LocalDate birth, Gender gender, OauthServerType oauthServerType) {
+    public static User createUser(String userName, String email, OauthServerType oauthServerType) {
         return builder()
                 .userName(userName)
-                .phoneNum(phoneNum)
                 .email(email)
-                .birth(birth)
-                .gender(gender)
                 .oauthServerType(oauthServerType)
                 .build();
     }
@@ -67,10 +56,7 @@ public class User extends BaseEntity {
         return new UserInfoVO(
                 id,
                 userName,
-                phoneNum,
                 email,
-                birth,
-                gender,
                 oauthServerType
         );
     }
