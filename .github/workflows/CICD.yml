@@ -1,0 +1,68 @@
+name: LYL CICD
+
+on:
+  workflow_dispatch:
+  
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+env:
+  S3_BUCKET_NAME: lyl-image
+  PROJECT_NAME: LYL
+  
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Add permission
+      run: chmod +x gradlew
+      
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
+      with:
+        arguments: |
+            build -x test
+            --no-daemon
+
+    - name: Gradle Caching
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+
+    - name: Make zip file
+      run: zip -r ./$GITHUB_SHA.zip .
+      shell: bash
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+
+    - name: Deploy
+      run: |
+        aws deploy create-deployment \
+        --application-name LYL \
+        --deployment-config-name CodeDeployDefault.AllAtOnce \
+        --deployment-group-name LYL \
+        --file-exists-behavior OVERWRITE \
+        --s3-location bucket=lyl-image,bundleType=zip,key=cd/$GITHUB_SHA.zip \
+        --region ap-northeast-2 \
