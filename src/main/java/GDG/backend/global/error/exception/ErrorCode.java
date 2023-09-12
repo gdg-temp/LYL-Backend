@@ -38,6 +38,9 @@ public enum ErrorCode {
     SMS_NOT_FOUND(404, "번호를 다시 입력해주세요"),
     AUTHENTICATION_TIME_OUT(404, "인증 시간이 만료되었습니다."),
     NO_ERROR_TYPE(404, "오류 발생"),
+    BAD_FILE_EXTENSION(404,  "파일 확장자 오류입니다."),
+    FILE_EMPTY(404,  "해당 파일이 비어 있습니다."),
+    FILE_UPLOAD_FAIL(404,  "파일 업로드에 실패하였습니다."),
 
     /* 500 SERVER_ERROR */
     INTERNAL_SERVER_ERROR(500,"서버 에러")
