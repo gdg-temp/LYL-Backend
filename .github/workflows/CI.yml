@@ -1,4 +1,4 @@
-name: LYL Build
+name: LYL CI
 
 on:
   push:
