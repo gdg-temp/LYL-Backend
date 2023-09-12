@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ROOT_PATH="/home/ec2-uesr/spring-github-action"
+ROOT_PATH="/home/ec2-user/spring-github-action"
 JAR="$ROOT_PATH/application.jar"
 STOP_LOG="$ROOT_PATH/stop.log"
 SERVICE_PID=$(pgrep -f $JAR)
