@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ${RDS_HOST}
+    url: ${{secrets.RDS_HOST}}
     username: ${{secrets.RDS_USERNAME}}
     password: ${{secrets.RDS_PASSWORD}}
   jpa:
