@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: ${RDS_HOST}
-    username: ${RDS_USERNAME}
-    password: ${RDS_PASSWORD}
+    username: ${{secrets.RDS_USERNAME}}
+    password: ${{secrets.RDS_PASSWORD}}
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,23 +16,23 @@ spring:
 
 auth:
   jwt:
-    secretKey: ${JWT_SECRET_KEY}
-    accessExp: ${JWT_ACCESS_EXP}
-    refreshExp: ${JWT_REFRESH_EXP}
-    header: ${JWT_HEADER}
-    prefix: ${JWT_PREFIX}
+    secretKey: ${{secrets.JWT_SECRET_KEY}}
+    accessExp: ${{secrets.JWT_ACCESS_EXP}}
+    refreshExp: ${{secrets.JWT_REFRESH_EXP}}
+    header: ${{secrets.JWT_HEADER}}
+    prefix: ${{secrets.JWT_PREFIX}}
 
 naver-cloud-sms:
-  accessKey: ${SMS_ACCESS_KEY}
-  secretKey: ${SMS_SECRET_KEY}
-  serviceId: ${SMS_SERVICE_ID}
-  senderPhone: ${SMS_SENDER_PHONE}
+  accessKey: ${{secrets.SMS_ACCESS_KEY}}
+  secretKey: ${{secrets.SMS_SECRET_KEY}}
+  serviceId: ${{secrets.SMS_SERVICE_ID}}
+  senderPhone: ${{secrets.SMS_SENDER_PHONE}}
 
 oauth:
   kakao:
-    client-id: ${KAKAO_CLIENT_ID}
-    redirect-uri: ${KAKAO_REDIRECT_URI}
-    client-secret: ${KAKAO_CLIENT_SECRET}
+    client-id: ${{secrets.KAKAO_CLIENT_ID}
+    redirect-uri: ${{secrets.KAKAO_REDIRECT_URI}}
+    client-secret: ${{secrets.KAKAO_CLIENT_SECRET}}
     scope:
       - profile_nickname
       - account_email
@@ -45,14 +45,14 @@ springdoc:
     groups:
       enabled: true
   swagger-ui:
-    path: ${SWAGGER_PATH}
+    path: ${{secrets.SWAGGER_PATH}}
     disable-swagger-default-url: true
     display-request-duration: true
   paths-to-match: /**
 
 aws:
-  access-key: ${AWS_ACCESS_KEY_ID}
-  secret-key: ${AWS_SECRET_ACCESS_KEY}
+  access-key: ${{secrets.AWS_ACCESS_KEY_ID}}
+  secret-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
   s3:
-    bucket: ${AWS_BUCKET}
-    base-url: ${AWS_BASE_URL}
+    bucket: ${{secrets.AWS_BUCKET}}
+    base-url: ${{secrets.AWS_BASE_URL}}
