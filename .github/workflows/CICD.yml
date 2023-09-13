@@ -27,9 +27,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - run: touch ./src/main/resources/application-secret.properties
-    - run: echo "${{ secrets.APPLICATION_SECRET }}" > ./src/main/resources/application-secret.properties
-    - run: cat ./src/main/resources/application-secret.properties
+    - name: Set YML
+      run: |
+        mkdir -p src/main/resources
+        echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
+        find src
         
     - name: Add permission
       run: chmod +x gradlew
