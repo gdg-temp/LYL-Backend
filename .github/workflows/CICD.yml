@@ -27,7 +27,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-   - name: Set YML
+    - name: Set YML
       run: |
         mkdir -p src/main/resources
         echo "${{ secrets.APPLICATION_YML }}" | base64 --decode > src/main/resources/application.yml
