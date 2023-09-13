@@ -13,6 +13,8 @@ spring:
         dialect:
   main:
     allow-bean-definition-overriding: true
+  profiles:
+    include: secret
 
 auth:
   jwt:
@@ -56,7 +58,3 @@ aws:
   s3:
     bucket: ENC(/NN23h2S9tZ5gf4sfwhba1tEt6ik52Oh)
     base-url: ENC(mqoGPZa75ITugjBgCju/NXun6LBEGOfWI/D4KMXjQmb7nrkC7K3WKRz3YzfuyU5H7LhdbKLOYhUFasHfDYd/8A==)
-
-jasypt:
-  encryptor:
-    password: jasyptStringEncryptor
