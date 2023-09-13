@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ENC(V1gEvFT+np0ckLZXhGfBkw5c46sQ29opv1SdVvHemIM5zwhcvHkeVlRAPHEQNA0oytRZKGrdLR0CRr56OonUmnF3grJ8I6r1YJ+vdKvUPOMLTglhM0ikxw==)
-    username: ENC(lxt+UBWYt3QtZy7cYmf33w==)
-    password: ENC(2iCiH6VkO+lrt/ik8EccMF4y4HdUof8h)
+    url: jdbc:mariadb://${MARIADB_HOST}:${MARIADB_PORT}/${DB_NAME}
+    username: ${MARIADB_USERNAME}
+    password: ${MARIADB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,28 +13,26 @@ spring:
         dialect:
   main:
     allow-bean-definition-overriding: true
-  profiles:
-    include: secret
 
 auth:
   jwt:
-    secretKey: ENC(LQxhFN/Py8ZVgTwSY+jK9iXleeooiUFYnOhvjuMFLRNGuEsJadGnzObTDdejstG/)
-    accessExp: 86400
-    refreshExp: 604800
-    header: ENC(AdR0xwqgkeBnIJs3SB5scafj8cducmad)
-    prefix: ENC(Pu6wzlGEdHp89v/cfosWYA==)
+    secretKey: ${JWT_SECRET_KEY}
+    accessExp: ${JWT_ACCESS_EXP}
+    refreshExp: ${JWT_REFRESH_EXP}
+    header: ${JWT_HEADER}
+    prefix: ${JWT_PREFIX}
 
 naver-cloud-sms:
-  accessKey: ENC(5oGLb5NO8804fvmQHq/pm+g1wLIeYCf7tl2aHJQ44l4=)
-  secretKey: ENC(One7/KEr/i+HU3KL/AUkg400KqtRB5oLSDzhAQonT76gw/xQBGO7w6tETuEweCKAmob+7Dj9AUY=)
-  serviceId: ENC(VhFmTfL2Yo4ryFtndKCByofPvx91xKrh00LMQSqO78uHhylM5iHi7g==)
-  senderPhone: ENC(aHkGjBco3HihIqABhAXQMShUy/+OkcLt)
+  accessKey: ${SMS_ACCESS_KEY}
+  secretKey: ${SMS_SECRET_KEY}
+  serviceId: ${SMS_SERVICE_ID}
+  senderPhone: ${SMS_SENDER_PHONE}
 
 oauth:
   kakao:
-    client-id: ENC(ZMCoX7Td99IhcChi61ttCL/msh0oZVLq/DI/DJX29Qt40vmcfH+toFXNAXOVu5gF)
-    redirect-uri: ENC(X0JI/4CAtxfRtZJjxFY1tvSOrVXYs8CK42gvR2vgYBoZnGydB3nXA54057kANf9Hfic6rjqDbfo=)
-    client-secret: ENC(3bosfqY6bsvYvQ3VG7oya43PtWaEw3XMpLlX32tPy6bMIKVe/p0nFY9kftNexMa1)
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-uri: ${KAKAO_REDIRECT_URI}
+    client-secret: ${KAKAO_CLIENT_SECRET}
     scope:
       - profile_nickname
       - account_email
@@ -47,14 +45,14 @@ springdoc:
     groups:
       enabled: true
   swagger-ui:
-    path: ENC(JwMsytP5y1Q43m8ooLahyTFT1LQ/bF7j)
+    path: ${SWAGGER_PATH}
     disable-swagger-default-url: true
     display-request-duration: true
   paths-to-match: /**
 
 aws:
-  access-key: ENC(aTwgS2GAzRGO83bj/uBH46Uxp6FpvVQijmWJUx2y4c0=)
-  secret-key: ENC(R+EgQDjNcJfnv/j6KmHxBGZUJgw8jDtTyagoitja4JuOq91k8CwhxUBg3CgM7wpASsZJEJYkJ9E=)
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
   s3:
-    bucket: ENC(/NN23h2S9tZ5gf4sfwhba1tEt6ik52Oh)
-    base-url: ENC(mqoGPZa75ITugjBgCju/NXun6LBEGOfWI/D4KMXjQmb7nrkC7K3WKRz3YzfuyU5H7LhdbKLOYhUFasHfDYd/8A==)
+    bucket: ${AWS_S3_BUCKET}
+    base-url: ${AWS_S3_BASE_URL}
