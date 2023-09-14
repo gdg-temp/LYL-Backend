@@ -41,4 +41,8 @@ public class OauthController {
     public void refreshingToken(@RequestBody TokenRefreshRequest tokenRefreshRequest) {
         oauthService.tokenRefresh(tokenRefreshRequest.refreshToken());
     }
+
+    @GetMapping
+    public void testLoadBalancer() {
+    }
 }
