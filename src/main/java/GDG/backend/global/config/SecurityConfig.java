@@ -36,6 +36,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/signUp").permitAll()
                         .requestMatchers("/api").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
+                        .requestMatchers("/api/images").permitAll()
+                        .requestMatchers("/api/card/profile/{cardId}").permitAll()
                         .requestMatchers(SwaggerPatterns).permitAll()
                         .anyRequest().authenticated()
                 )
