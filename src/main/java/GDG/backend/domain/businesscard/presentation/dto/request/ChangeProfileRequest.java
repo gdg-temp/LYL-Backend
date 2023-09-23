@@ -1,6 +1,5 @@
 package GDG.backend.domain.businesscard.presentation.dto.request;
 
-import GDG.backend.domain.businesscard.domain.WorkType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ChangeProfileRequest(

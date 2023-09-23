@@ -1,11 +1,9 @@
 package GDG.backend.domain.businesscard.presentation.dto.request;
 
-import GDG.backend.domain.businesscard.domain.WorkType;
 import GDG.backend.domain.link.domain.Link;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public record CreateBusinessCardRequest(

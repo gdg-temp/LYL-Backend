@@ -1,10 +1,5 @@
 package GDG.backend.domain.businesscard.domain.vo;
 
-import GDG.backend.domain.businesscard.domain.WorkType;
-import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDate;
-
 public record BusinessCardInfoVO(
         Long cardId,
 
