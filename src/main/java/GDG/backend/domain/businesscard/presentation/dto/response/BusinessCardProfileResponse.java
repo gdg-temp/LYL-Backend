@@ -1,35 +1,32 @@
 package GDG.backend.domain.businesscard.presentation.dto.response;
 
-import GDG.backend.domain.businesscard.domain.WorkType;
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public record BusinessCardProfileResponse(
-        @Schema(description = "명함 Id")
-        Long id,
+        Long cardId,
+
         String name,
+        @Schema(description = "프로필 이미지 URL")
+        String profileImage,
         String email,
-        WorkType workType,
-        String job,
-        String position,
+        String introduction,
+        String mbti,
+        @Schema(description = "템플릿 URL")
+        String template,
         String companyName,
-        String companyAddress,
-        LocalDate birth,
-        @Schema(description = "템플릿 이미지 URL")
-        String templateURL,
-        @Schema(description = "명함의 링크 정보")
-        List<LinkInfoVO> links,
-        @Schema(description = "대표 명함 확인")
-        Boolean isRepresentative
+        String position,
+        Boolean isMine,
+        @Nullable
+        List<LinkInfoVO> linkInfoVOList
 ) {
-    public BusinessCardProfileResponse (BusinessCardInfoVO businessCardInfoVO, List<LinkInfoVO> links) {
-        this(businessCardInfoVO.id(), businessCardInfoVO.name(), businessCardInfoVO.email(), businessCardInfoVO.workType(),
-                businessCardInfoVO.job(), businessCardInfoVO.position(), businessCardInfoVO.companyName(),
-                businessCardInfoVO.companyAddress(), businessCardInfoVO.birth(), businessCardInfoVO.templateURL(),
-                links, businessCardInfoVO.isRepresentative());
+    public BusinessCardProfileResponse (BusinessCardInfoVO businessCardInfoVO, Boolean isMine,  List<LinkInfoVO> links) {
+        this(businessCardInfoVO.cardId(), businessCardInfoVO.name(), businessCardInfoVO.profileImage(), businessCardInfoVO.email()
+                , businessCardInfoVO.introduction(), businessCardInfoVO.mbti(), businessCardInfoVO.template(), businessCardInfoVO.companyName()
+                , businessCardInfoVO.position(), isMine, links);
     }
 }

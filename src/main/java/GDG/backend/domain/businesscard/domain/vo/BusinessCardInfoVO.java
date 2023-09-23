@@ -1,20 +1,16 @@
 package GDG.backend.domain.businesscard.domain.vo;
 
-import GDG.backend.domain.businesscard.domain.WorkType;
-
-import java.time.LocalDate;
-
 public record BusinessCardInfoVO(
-        Long id,
+        Long cardId,
+
         String name,
+        String profileImage,
         String email,
-        WorkType workType,
-        String job,
-        String position,
+        String introduction,
+        String mbti,
+        String template,
         String companyName,
-        String companyAddress,
-        LocalDate birth,
-        String templateURL,
-        Boolean isRepresentative
+        String position
+
 ) {
 }

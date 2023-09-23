@@ -1,14 +1,17 @@
 package GDG.backend.domain.businesscard.presentation.dto.request;
 
-import GDG.backend.domain.businesscard.domain.WorkType;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public record ChangeProfileRequest(
         String name,
+        @Schema(description = "프로필 이미지 URL")
+        String profileImage,
         String email,
-        WorkType workType,
-        String job,
-        String position,
+        String introduction,
+        String mbti,
+        @Schema(description = "템플릿 URL")
+        String template,
         String companyName,
-        String companyAddress
+        String position
 ) {
 }

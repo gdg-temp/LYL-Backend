@@ -31,54 +31,46 @@ public class BusinessCard {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    
+
+    private String profileImage;
     private String name;
     private String email;
-
-    @Enumerated(STRING)
-    private WorkType workType;
-    private String job;
-    private String position;
-    private String companyName;
-    private String companyAddress;
-    private LocalDate birth;
+    private String introduction;
+    private String mbti;
+    private String template;
 
     @OneToMany(mappedBy = "businessCard", cascade = ALL)
     private List<Link> links;
 
-    private String templateURL;
-    private Boolean isRepresentative;
+    private String companyName;
+    private String position;
 
     @Builder
-    public BusinessCard(User user, String name, String email, WorkType workType, String job, String position, String companyName,
-                        String companyAddress, LocalDate birth, String templateURL,  Boolean isRepresentative) {
+    public BusinessCard(User user, String profileImage, String name, String email, String introduction, String mbti,
+                        String template, String companyName, String position) {
         this.user = user;
+        this.profileImage = profileImage;
         this.name = name;
         this.email = email;
-        this.workType = workType;
-        this.job = job;
-        this.position = position;
+        this.introduction = introduction;
+        this.mbti = mbti;
+        this.template = template;
         this.companyName = companyName;
-        this.companyAddress = companyAddress;
-        this.birth = birth;
-        this.templateURL = templateURL;
-        this.isRepresentative = isRepresentative;
+        this.position = position;
     }
 
-    public static BusinessCard createBusinessCard(User user, String name, String email, WorkType workType, String job, String position, String companyName,
-                                                  String companyAddress, LocalDate birth, String templateURL) {
+    public static BusinessCard createBusinessCard(User user, String profileImage, String name, String email, String introduction, String mbti,
+                                                  String template, String companyName, String position) {
         return builder()
                 .user(user)
+                .profileImage(profileImage)
                 .name(name)
                 .email(email)
-                .workType(workType)
-                .job(job)
-                .position(position)
+                .introduction(introduction)
+                .mbti(mbti)
+                .template(template)
                 .companyName(companyName)
-                .companyAddress(companyAddress)
-                .birth(birth)
-                .templateURL(templateURL)
-                .isRepresentative(FALSE)
+                .position(position)
                 .build();
     }
 
@@ -86,20 +78,14 @@ public class BusinessCard {
         return new BusinessCardInfoVO(
                 id,
                 name,
+                profileImage,
                 email,
-                workType,
-                job,
-                position,
+                introduction,
+                mbti,
+                template,
                 companyName,
-                companyAddress,
-                birth,
-                templateURL,
-                isRepresentative
+                position
         );
-    }
-
-    public void changeRepresentative() {
-        this.isRepresentative = !this.isRepresentative;
     }
 
     public void validUserIsHost(Long id) {
@@ -108,14 +94,15 @@ public class BusinessCard {
         }
     }
 
-    public void changeProfile(String name, String email, WorkType workType, String job, String position, String companyName,
-                              String companyAddress) {
+    public void changeProfile(String profileImage, String name, String email, String introduction, String mbti,
+                              String template, String companyName, String position) {
+        this.profileImage = profileImage;
         this.name = name;
         this.email = email;
-        this.workType = workType;
-        this.job = job;
-        this.position = position;
+        this.introduction = introduction;
+        this.mbti = mbti;
+        this.template = template;
         this.companyName = companyName;
-        this.companyAddress = companyAddress;
+        this.position = position;
     }
 }
