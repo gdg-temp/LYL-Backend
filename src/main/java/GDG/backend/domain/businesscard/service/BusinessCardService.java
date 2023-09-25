@@ -13,6 +13,7 @@ import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -57,12 +58,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         return createProfileResponse(businessCard);
     }
 
-//    // 내 명함 리스트 조회하기
-//    public MyBusinessCardListResponse getMyBusinessCardList() {
-//        User user = userUtils.getUserFromSecurityContext();
-//        return getMyBusinessCardListResponse(user);
-//    }
-
     @Override
     public List<BusinessCardProfileResponse> getMyBusinessCardListResponse() {
         User user = userUtils.getUserFromSecurityContext();
@@ -101,10 +96,16 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     // 해당 명함 조회하기
     public BusinessCardProfileResponse getBusinessCardProfile(Long cardId) {
         BusinessCard card = queryBusinessCard(cardId);
-        Boolean isMine = TRUE;
-        if (userUtils.getUserFromSecurityContext() != card.getUser() || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser") {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isMine = TRUE;
+        if (userUtils.getUserFromSecurityContext() != card.getUser() || authentication instanceof AnonymousAuthenticationToken || authentication == null) {
             isMine = FALSE;
         }
+
+//        Boolean isMine = TRUE;
+//        if (userUtils.getUserFromSecurityContext() != card.getUser() || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser") {
+//            isMine = FALSE;
+//        }
 
         List<LinkInfoVO> linkInfos;
         if (card.getLinks() != null) {
