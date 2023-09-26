@@ -1,5 +1,6 @@
 package GDG.backend.global.oauth.config;
 
+import GDG.backend.global.oauth.google.client.GoogleApiClient;
 import GDG.backend.global.oauth.kakao.client.KakaoApiClient;
 import GDG.backend.global.oauth.naver.client.NaverApiClient;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 public class HttpInterfaceConfig {
+
+    @Bean
+    public GoogleApiClient googleApiClient() {
+        return createHttpInterface(GoogleApiClient.class);
+    }
 
     @Bean
     public KakaoApiClient kakaoApiClient() {
