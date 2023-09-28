@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "이미지", description = "이미지 업로드 관련 API")
 @RequiredArgsConstructor
-@RequestMapping("/api/images")
+@RequestMapping("/api")
 @RestController
 public class ImageController {
 
@@ -22,7 +22,7 @@ public class ImageController {
 
     @SecurityRequirements
     @Operation(summary = "이미지 업로드")
-    @PostMapping()
+    @PostMapping("/images")
     public UploadImageResponse uploadImage(@RequestPart(value = "file") MultipartFile file) {
         return imageService.uploadImage(file);
     }
