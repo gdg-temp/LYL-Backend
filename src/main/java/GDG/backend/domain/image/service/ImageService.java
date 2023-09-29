@@ -53,7 +53,7 @@ public class ImageService implements ImageUtils{
 
         String randomName = UUID.randomUUID().toString();
 
-        String fileName = SecurityUtils.getCurrentUserId() + "|" + randomName + "." + ext;
+        String fileName = "|" + randomName + "." + ext;
 
         try {
             ObjectMetadata objMeta = new ObjectMetadata();
