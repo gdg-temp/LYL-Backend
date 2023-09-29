@@ -13,7 +13,6 @@ import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -25,8 +24,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
-import static software.amazon.ion.impl.PrivateIonConstants.False;
-import static software.amazon.ion.impl.PrivateIonConstants.True;
 
 @Slf4j
 @Service
@@ -84,7 +81,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
         Boolean isMine = (user == card.getUser());
 
-
         return new BusinessCardProfileResponse(
                 card.getBusinessCardInfo(),
                 isMine,
@@ -98,14 +94,10 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         BusinessCard card = queryBusinessCard(cardId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isMine = TRUE;
-        if (userUtils.getUserFromSecurityContext() != card.getUser() || authentication instanceof AnonymousAuthenticationToken || authentication == null) {
+
+        if (authentication.getPrincipal() == "anonymousUser" || userUtils.getUserFromSecurityContext() != card.getUser()) {
             isMine = FALSE;
         }
-
-//        Boolean isMine = TRUE;
-//        if (userUtils.getUserFromSecurityContext() != card.getUser() || SecurityContextHolder.getContext().getAuthentication().getPrincipal() == "anonymousUser") {
-//            isMine = FALSE;
-//        }
 
         List<LinkInfoVO> linkInfos;
         if (card.getLinks() != null) {
@@ -115,6 +107,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         } else {
             linkInfos = new ArrayList<>();
         }
+
         return new BusinessCardProfileResponse(card.getBusinessCardInfo(), isMine, linkInfos);
     }
 
