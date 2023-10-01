@@ -42,7 +42,7 @@ public class BusinessCardController {
     }
 
     @Operation(summary = "명함 수정하기")
-    @PatchMapping("/{id}/edit")
+    @PutMapping("/{id}/edit")
     public BusinessCardProfileResponse changeProfile(@RequestBody @Valid ChangeProfileRequest changeProfileRequest
             , @Parameter(description = "명함 Id", in = PATH) @PathVariable Long id) {
         return businessCardService.updateBusinessCardProfile(id, changeProfileRequest);
