@@ -15,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,20 +29,27 @@ public class LinkService implements LinkServiceUtils{
 
     // 링크 추가하기
     @Transactional
-    public LinkProfileResponse addLink(Long cardId, AddLinkRequest addLinkRequest) {
+    public List<LinkProfileResponse> addLinks(Long cardId, List<AddLinkRequest> addLinkRequests) {
         BusinessCard businessCard = businessCardServiceUtils.validHost(cardId);
 
-        Link link = Link.addLink(
-                businessCard,
-                addLinkRequest.linkType(),
-                addLinkRequest.linkUrl(),
-                addLinkRequest.linkText()
-        );
+        List<LinkProfileResponse> linkResponses = addLinkRequests.stream()
+                .map(addLinkRequest -> {
+                    Link link = Link.addLink(
+                            businessCard,
+                            addLinkRequest.linkType(),
+                            addLinkRequest.linkUrl(),
+                            addLinkRequest.linkText()
+                    );
 
-        linkRepository.save(link);
+                    linkRepository.save(link);
 
-        return new LinkProfileResponse(link.getLinkInfoVO());
+                    return new LinkProfileResponse(link.getLinkInfoVO());
+                })
+                .collect(Collectors.toList());
+
+        return linkResponses;
     }
+
 
     // 링크 수정하기
     @Transactional
