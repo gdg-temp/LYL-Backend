@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 
 @Tag(name = "명함 저장", description = "다른 사람 명함 관련 API")
 @RestController
-@RequestMapping("/api/storage")
+@RequestMapping("/api/collection")
 @RequiredArgsConstructor
 public class StorageController {
 
@@ -33,7 +35,7 @@ public class StorageController {
 
     @Operation(summary = "내가 저장한 다른 사람의 명함 조회하기")
     @GetMapping()
-    public void getStorageList() {
-        storageService.getStorageList();
+    public List<StorageProfileResponse> getStorageList() {
+        return storageService.getStorageList();
     }
 }

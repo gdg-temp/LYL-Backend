@@ -19,10 +19,11 @@ import static lombok.AccessLevel.PROTECTED;
 public class Storage {
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "card_storage_id")
+    @Column(name = "storage_id")
     private Long id;
 
-    @OneToOne
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = LAZY)
@@ -47,5 +48,4 @@ public class Storage {
             throw UserNotStorageHostException.EXCEPTION;
         }
     }
-
 }
