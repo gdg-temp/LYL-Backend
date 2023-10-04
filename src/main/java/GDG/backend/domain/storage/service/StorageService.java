@@ -2,8 +2,11 @@ package GDG.backend.domain.storage.service;
 
 import GDG.backend.domain.businesscard.domain.BusinessCard;
 import GDG.backend.domain.businesscard.service.BusinessCardServiceUtils;
+import GDG.backend.domain.link.domain.Link;
+import GDG.backend.domain.link.domain.vo.LinkInfoVO;
 import GDG.backend.domain.storage.domain.Storage;
 import GDG.backend.domain.storage.domain.respository.StorageRepository;
+import GDG.backend.domain.storage.exception.CardHostNotStorageException;
 import GDG.backend.domain.storage.exception.ExistStorageException;
 import GDG.backend.domain.storage.exception.StorageNotFoundException;
 import GDG.backend.domain.storage.presentation.dto.response.StorageProfileResponse;
@@ -15,7 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static java.lang.Boolean.*;
 
 @Slf4j
 @Service
@@ -35,10 +43,15 @@ public class StorageService {
         if (storageRepository.existsByUserAndBusinessCard(user, businessCard)) {
             throw ExistStorageException.EXCEPTION;
         }
+
+        if (businessCard.getUser() == user) {
+            throw CardHostNotStorageException.EXCEPTION;
+        }
+
         Storage storage = Storage.saveCard(user, businessCard);
         storageRepository.save(storage);
 
-        return new StorageProfileResponse();
+        return createProfileResponse(storage);
     }
 
     @Transactional
@@ -50,10 +63,32 @@ public class StorageService {
         storageRepository.delete(storage);
     }
 
-    public void getStorageList() {
+    public List<StorageProfileResponse> getStorageList() {
         User user = userUtils.getUserFromSecurityContext();
         List<Storage> storageList = storageRepository.findAllByUser(user);
+        List<StorageProfileResponse> storageProfileResponseList = storageList.stream()
+                .map(this::createProfileResponse)
+                .collect(Collectors.toList());
 
+        return storageProfileResponseList;
+    }
+
+    private StorageProfileResponse createProfileResponse(Storage storage) {
+        BusinessCard card = storage.getBusinessCard();
+        List<LinkInfoVO> linkInfos;
+        if (card.getLinks() != null) {
+            linkInfos = card.getLinks().stream()
+                    .map(Link::getLinkInfoVO)
+                    .collect(Collectors.toList());
+        } else {
+            linkInfos = new ArrayList<>();
+        }
+
+        return new StorageProfileResponse(
+                card.getBusinessCardInfo(),
+                FALSE,
+                linkInfos
+        );
     }
     public Storage queryStorage(Long storageId) {
         return storageRepository.findById(storageId).orElseThrow(() -> StorageNotFoundException.EXCEPTION);
