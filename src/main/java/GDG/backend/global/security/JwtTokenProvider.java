@@ -10,6 +10,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -138,20 +139,18 @@ public class JwtTokenProvider {
     }
 
     public void setHeaderCookies(HttpServletResponse response, String refreshToken, String accessToken) {
-        ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessToken)
-                .maxAge(86400)
-                .path("/")
-                .httpOnly(true)
-                .build();
+        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+        accessTokenCookie.setMaxAge(86400);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setHttpOnly(true);
 
-        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(604800)
-                .path("/")
-                .httpOnly(true)
-                .build();
+        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        refreshTokenCookie.setMaxAge(604800);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setHttpOnly(true);
 
-        response.setHeader("refreshToken", refreshTokenCookie.toString());
-        response.setHeader("accessToken", accessTokenCookie.toString());
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
     }
 
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
