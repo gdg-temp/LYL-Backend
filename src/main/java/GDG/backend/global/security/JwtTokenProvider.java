@@ -137,6 +137,23 @@ public class JwtTokenProvider {
         throw InvalidTokenException.EXCEPTION;
     }
 
+    public void setHeaderCookies(HttpServletResponse response, String refreshToken, String accessToken) {
+        ResponseCookie accessTokenCookie = ResponseCookie.from("accessToken", accessToken)
+                .maxAge(86400)
+                .path("/")
+                .httpOnly(true)
+                .build();
+
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refreshToken", refreshToken)
+                .maxAge(604800)
+                .path("/")
+                .httpOnly(true)
+                .build();
+
+        response.setHeader("refreshToken", refreshTokenCookie.toString());
+        response.setHeader("accessToken", accessTokenCookie.toString());
+    }
+
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
         ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
                         .maxAge(86400)
