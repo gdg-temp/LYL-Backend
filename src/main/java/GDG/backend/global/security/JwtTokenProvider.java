@@ -139,7 +139,7 @@ public class JwtTokenProvider {
     }
 
     public void setHeaderCookies(HttpServletResponse response, String refreshToken, String accessToken) {
-        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+        Cookie accessTokenCookie = new Cookie("LYL_TOKEN", accessToken);
         accessTokenCookie.setMaxAge(86400);
         accessTokenCookie.setPath("/");
         accessTokenCookie.setHttpOnly(true);
