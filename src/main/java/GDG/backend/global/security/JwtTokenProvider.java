@@ -144,7 +144,7 @@ public class JwtTokenProvider {
         accessTokenCookie.setPath("/");
         accessTokenCookie.setHttpOnly(true);
 
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
+        Cookie refreshTokenCookie = new Cookie("LYL_TOKEN_REFRESH", refreshToken);
         refreshTokenCookie.setMaxAge(604800);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setHttpOnly(true);
