@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -137,12 +138,22 @@ public class JwtTokenProvider {
     }
 
     public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        response.setHeader("Authorization", accessToken);
+        ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                        .maxAge(86400)
+                        .path("/")
+                        .httpOnly(true)
+                        .build();
+        response.setHeader("Set-Cookie", cookie.toString());
     }
 
     // RefreshToken 헤더 설정
     public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        response.setHeader("RefreshToken", refreshToken);
+        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+                .maxAge(604800)
+                .path("/")
+                .httpOnly(true)
+                .build();
+        response.setHeader("Set-Cookie", cookie.toString());
     }
 
     public Long getRefreshTokenTTlSecond() {
