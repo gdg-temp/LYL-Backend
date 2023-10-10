@@ -48,7 +48,8 @@ public class UserService {
         String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
 
-        jwtTokenProvider.setHeaderCookies(response, refreshToken, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
 
         refreshTokenRepository.save(new RefreshToken(refreshToken, user.getId()));
         return new SignUpResponse(user.getUserInfo(), FALSE);
