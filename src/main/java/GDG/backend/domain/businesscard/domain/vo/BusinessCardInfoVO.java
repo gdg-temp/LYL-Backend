@@ -7,8 +7,8 @@ public record BusinessCardInfoVO(
         String profileImage,
         String email,
         String introduction,
-        String mbti,
-        String template,
+        String styleTemplate,
+        String designTemplate,
         String companyName,
         String position
 

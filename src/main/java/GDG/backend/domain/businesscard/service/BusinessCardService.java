@@ -44,8 +44,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 createBusinessCardRequest.name(),
                 createBusinessCardRequest.email(),
                 createBusinessCardRequest.introduction(),
-                createBusinessCardRequest.mbti(),
-                createBusinessCardRequest.template(),
+                createBusinessCardRequest.styleTemplate(),
+                createBusinessCardRequest.designTemplate(),
                 createBusinessCardRequest.companyName(),
                 createBusinessCardRequest.position()
         );
@@ -120,8 +120,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 changeProfileRequest.name(),
                 changeProfileRequest.email(),
                 changeProfileRequest.introduction(),
-                changeProfileRequest.mbti(),
-                changeProfileRequest.template(),
+                changeProfileRequest.styleTemplate(),
+                changeProfileRequest.designTemplate(),
                 changeProfileRequest.companyName(),
                 changeProfileRequest.companyName()
         );

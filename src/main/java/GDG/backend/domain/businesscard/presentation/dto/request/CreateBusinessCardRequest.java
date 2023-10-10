@@ -12,10 +12,11 @@ public record CreateBusinessCardRequest(
         String profileImage,
         String email,
         String introduction,
-        String mbti,
-        @Schema(description = "템플릿 URL")
-        String template,
+        String styleTemplate,
+        String designTemplate,
+        @Nullable
         String companyName,
+        @Nullable
         String position,
         @Nullable
         List<Link> links

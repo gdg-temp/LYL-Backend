@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -36,8 +37,8 @@ public class BusinessCard {
     private String name;
     private String email;
     private String introduction;
-    private String mbti;
-    private String template;
+    private String styleTemplate;
+    private String designTemplate;
 
     @OneToMany(mappedBy = "businessCard", cascade = ALL)
     private List<Link> links;
@@ -46,29 +47,29 @@ public class BusinessCard {
     private String position;
 
     @Builder
-    public BusinessCard(User user, String profileImage, String name, String email, String introduction, String mbti,
-                        String template, String companyName, String position) {
+    public BusinessCard(User user, String profileImage, String name, String email, String introduction, String styleTemplate,
+                        String designTemplate, String companyName, String position) {
         this.user = user;
         this.profileImage = profileImage;
         this.name = name;
         this.email = email;
         this.introduction = introduction;
-        this.mbti = mbti;
-        this.template = template;
+        this.styleTemplate = styleTemplate;
+        this.designTemplate = designTemplate;
         this.companyName = companyName;
         this.position = position;
     }
 
-    public static BusinessCard createBusinessCard(User user, String profileImage, String name, String email, String introduction, String mbti,
-                                                  String template, String companyName, String position) {
+    public static BusinessCard createBusinessCard(User user, String profileImage, String name, String email, String introduction, String styleTemplate,
+                                                  String designTemplate, String companyName, String position) {
         return builder()
                 .user(user)
                 .profileImage(profileImage)
                 .name(name)
                 .email(email)
                 .introduction(introduction)
-                .mbti(mbti)
-                .template(template)
+                .styleTemplate(styleTemplate)
+                .designTemplate(designTemplate)
                 .companyName(companyName)
                 .position(position)
                 .build();
@@ -81,8 +82,8 @@ public class BusinessCard {
                 profileImage,
                 email,
                 introduction,
-                mbti,
-                template,
+                styleTemplate,
+                designTemplate,
                 companyName,
                 position
         );
@@ -94,14 +95,14 @@ public class BusinessCard {
         }
     }
 
-    public void changeProfile(String profileImage, String name, String email, String introduction, String mbti,
-                              String template, String companyName, String position) {
+    public void changeProfile(String profileImage, String name, String email, String introduction, String styleTemplate,
+                              String designTemplate, String companyName, String position) {
         this.profileImage = profileImage;
         this.name = name;
         this.email = email;
         this.introduction = introduction;
-        this.mbti = mbti;
-        this.template = template;
+        this.styleTemplate = styleTemplate;
+        this.designTemplate = designTemplate;
         this.companyName = companyName;
         this.position = position;
     }
