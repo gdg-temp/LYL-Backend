@@ -58,7 +58,8 @@ public class OauthService {
         String accessToken = jwtTokenProvider.generateAccessToken(saved.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(saved.getId());
 
-        jwtTokenProvider.setHeaderCookies(response, refreshToken, accessToken);
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
 
         refreshTokenRepository.save(new RefreshToken(refreshToken, savedUser.get().getId()));
 
@@ -77,9 +78,10 @@ public class OauthService {
 
         User user = userUtils.getUserById(userId);
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
 
         getRefreshToken.updateRefreshToken(refreshToken);
     }
+
+
 }

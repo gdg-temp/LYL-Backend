@@ -138,38 +138,23 @@ public class JwtTokenProvider {
         throw InvalidTokenException.EXCEPTION;
     }
 
-    public void setHeaderCookies(HttpServletResponse response, String refreshToken, String accessToken) {
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
         Cookie accessTokenCookie = new Cookie("LYL_TOKEN", accessToken);
         accessTokenCookie.setMaxAge(86400);
         accessTokenCookie.setPath("/");
         accessTokenCookie.setHttpOnly(true);
 
+        response.addCookie(accessTokenCookie);
+    }
+
+    // RefreshToken 헤더 설정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
         Cookie refreshTokenCookie = new Cookie("LYL_TOKEN_REFRESH", refreshToken);
         refreshTokenCookie.setMaxAge(604800);
         refreshTokenCookie.setPath("/");
         refreshTokenCookie.setHttpOnly(true);
 
-        response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
-    }
-
-    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
-        ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
-                        .maxAge(86400)
-                        .path("/")
-                        .httpOnly(true)
-                        .build();
-        response.setHeader("Set-Cookie", cookie.toString());
-    }
-
-    // RefreshToken 헤더 설정
-    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(604800)
-                .path("/")
-                .httpOnly(true)
-                .build();
-        response.setHeader("Set-Cookie", cookie.toString());
     }
 
     public Long getRefreshTokenTTlSecond() {
