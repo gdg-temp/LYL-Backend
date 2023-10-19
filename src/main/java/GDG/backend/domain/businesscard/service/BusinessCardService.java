@@ -41,8 +41,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     private final UserUtils userUtils;
     private final ReasonServiceUtils reasonServiceUtils;
 
-    @Value("${BASE64}")
-    private String base64;
+    @Value("${base-secret}")
+    private String baseSecret;
 
     // 명함 생성하기
     @Transactional
@@ -168,14 +168,14 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     private String encodeId(Long id) {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(base64);
+        textEncryptor.setPassword(baseSecret);
 
         return textEncryptor.encrypt(id.toString());
     }
 
     private Long decodeId(String id) {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(base64);
+        textEncryptor.setPassword(baseSecret);
         return Long.parseLong(textEncryptor.decrypt(id));
     }
 

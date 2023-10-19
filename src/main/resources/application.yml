@@ -94,4 +94,4 @@ server:
     mbeanregistry:
       enabled: true
 
-base64: ${BASE64}
+base-secret: ${BASE_SECRET}
