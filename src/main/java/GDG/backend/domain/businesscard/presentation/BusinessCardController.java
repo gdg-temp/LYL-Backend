@@ -31,7 +31,7 @@ public class BusinessCardController {
 
     @Operation(summary = "해당 명함 조회하기")
     @GetMapping("/cards/{id}")
-    public BusinessCardProfileResponse getBusinessCardProfile(@Parameter(description = "명함 Id", in = PATH) @PathVariable Long id) {
+    public BusinessCardProfileResponse getBusinessCardProfile(@Parameter(description = "명함 Id", in = PATH) @PathVariable String id) {
         return businessCardService.getBusinessCardProfile(id);
     }
 

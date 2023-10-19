@@ -16,10 +16,11 @@ public record StorageProfileResponse(
         String profileImage,
         String email,
         String introduction,
-        String mbti,
-        @Schema(description = "템플릿 URL")
-        String template,
+        String styleTemplate,
+        String designTemplate,
+        @Nullable
         String companyName,
+        @Nullable
         String position,
         Boolean isMine,
         @Nullable
@@ -27,7 +28,7 @@ public record StorageProfileResponse(
 ) {
     public StorageProfileResponse (BusinessCardInfoVO businessCardInfoVO, Boolean isMine,  List<LinkInfoVO> links) {
         this(businessCardInfoVO.cardId(), businessCardInfoVO.name(), businessCardInfoVO.profileImage(), businessCardInfoVO.email()
-                , businessCardInfoVO.introduction(), businessCardInfoVO.mbti(), businessCardInfoVO.template(), businessCardInfoVO.companyName()
-                , businessCardInfoVO.position(), isMine, links);
+                , businessCardInfoVO.introduction(), businessCardInfoVO.styleTemplate(), businessCardInfoVO.designTemplate()
+                , businessCardInfoVO.companyName(), businessCardInfoVO.position(), isMine, links);
     }
 }

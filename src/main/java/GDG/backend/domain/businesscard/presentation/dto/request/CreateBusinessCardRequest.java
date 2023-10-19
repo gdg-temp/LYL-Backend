@@ -18,6 +18,7 @@ public record CreateBusinessCardRequest(
         String companyName,
         @Nullable
         String position,
+        List<String> texts,
         @Nullable
         List<Link> links
 ) {

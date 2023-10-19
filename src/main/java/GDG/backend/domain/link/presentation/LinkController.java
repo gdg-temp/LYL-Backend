@@ -11,8 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 
 @Tag(name = "링크", description = "명함의 링크 관련 API")
@@ -25,11 +23,11 @@ public class LinkController {
 
     @Operation(summary = "링크 추가하기")
     @PostMapping("/{cardId}")
-    public List<LinkProfileResponse> addLink(
+    public LinkProfileResponse addLink(
             @Parameter(description = "명함 Id", in = PATH)
             @PathVariable Long cardId,
-            @RequestBody @Valid List<AddLinkRequest> addLinkRequests) {
-        return linkService.addLinks(cardId, addLinkRequests);
+            @RequestBody @Valid AddLinkRequest addLinkRequest) {
+        return linkService.addLink(cardId, addLinkRequest);
     }
 
     @Operation(summary = "링크 수정하기")

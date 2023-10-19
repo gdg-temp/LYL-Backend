@@ -93,3 +93,5 @@ server:
   tomcat:
     mbeanregistry:
       enabled: true
+
+base64: ${BASE64}
