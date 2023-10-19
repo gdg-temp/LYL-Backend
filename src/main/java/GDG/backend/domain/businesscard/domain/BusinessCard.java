@@ -3,6 +3,7 @@ package GDG.backend.domain.businesscard.domain;
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
 import GDG.backend.domain.businesscard.exception.UserNotHostException;
 import GDG.backend.domain.link.domain.Link;
+import GDG.backend.domain.reason.domain.Reason;
 import GDG.backend.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -41,7 +42,10 @@ public class BusinessCard {
     private String designTemplate;
 
     @OneToMany(mappedBy = "businessCard", cascade = ALL)
-    private List<Link> links;
+    private List<Reason> reasons = new ArrayList<>();
+
+    @OneToMany(mappedBy = "businessCard", cascade = ALL)
+    private List<Link> links = new ArrayList<>();
 
     private String companyName;
     private String position;
@@ -106,4 +110,8 @@ public class BusinessCard {
         this.companyName = companyName;
         this.position = position;
     }
+
+//    public void setReasons(Reason reasons) {
+//        this.reasons.add(reasons);
+//    }
 }
