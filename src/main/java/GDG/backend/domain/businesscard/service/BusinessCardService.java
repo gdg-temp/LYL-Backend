@@ -8,16 +8,24 @@ import GDG.backend.domain.businesscard.presentation.dto.request.CreateBusinessCa
 import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardProfileResponse;
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
+import GDG.backend.domain.reason.domain.Reason;
+import GDG.backend.domain.reason.domain.vo.ReasonInfoVO;
+import GDG.backend.domain.reason.exception.ReasonsExceededException;
+import GDG.backend.domain.reason.service.ReasonServiceUtils;
 import GDG.backend.domain.user.domain.User;
 import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,11 +41,19 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     private final BusinessCardRepository businessCardRepository;
     private final UserUtils userUtils;
+    private final ReasonServiceUtils reasonServiceUtils;
+
+    @Value("${BASE64}")
+    private String base64;
 
     // 명함 생성하기
     @Transactional
     public BusinessCardProfileResponse createBusinessCard(CreateBusinessCardRequest createBusinessCardRequest) {
         User currentUser = userUtils.getUserFromSecurityContext();
+        if (4 <= createBusinessCardRequest.texts().size()) {
+            throw ReasonsExceededException.EXCEPTION;
+        }
+
         BusinessCard businessCard = BusinessCard.createBusinessCard(
                 currentUser,
                 createBusinessCardRequest.profileImage(),
@@ -51,6 +67,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         );
 
         businessCardRepository.save(businessCard);
+
+        createBusinessCardRequest.texts().forEach(text -> reasonServiceUtils.createReason(businessCard, text));
 
         return createProfileResponse(businessCard);
     }
@@ -77,20 +95,29 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
+        List<ReasonInfoVO> reasonInfos = card.getReasons().stream()
+                .map(Reason::getReasonInfoVO)
+                .collect(Collectors.toList());
+
         User user = userUtils.getUserFromSecurityContext();
+
+        String encodeId = encodeId(card.getId());
 
         Boolean isMine = (user == card.getUser());
 
         return new BusinessCardProfileResponse(
+                encodeId,
                 card.getBusinessCardInfo(),
                 isMine,
+                reasonInfos,
                 linkInfos
         );
     }
 
 
     // 해당 명함 조회하기
-    public BusinessCardProfileResponse getBusinessCardProfile(Long cardId) {
+    public BusinessCardProfileResponse getBusinessCardProfile(String id) {
+        Long cardId = decodeId(id);
         BusinessCard card = queryBusinessCard(cardId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isMine = TRUE;
@@ -108,7 +135,11 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        return new BusinessCardProfileResponse(card.getBusinessCardInfo(), isMine, linkInfos);
+        List<ReasonInfoVO> reasonInfos = card.getReasons().stream()
+                .map(Reason::getReasonInfoVO)
+                .collect(Collectors.toList());
+
+        return new BusinessCardProfileResponse(id, card.getBusinessCardInfo(), isMine, reasonInfos, linkInfos);
     }
 
      // 명함 정보 수정하기
@@ -135,6 +166,19 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         BusinessCard businessCard = validHost(cardId);
 
         businessCardRepository.delete(businessCard);
+    }
+
+    private String encodeId(Long id) {
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(base64);
+
+        return textEncryptor.encrypt(id.toString());
+    }
+
+    private Long decodeId(String id) {
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(base64);
+        return Long.parseLong(textEncryptor.decrypt(id));
     }
 
     @Override
