@@ -1,22 +1,18 @@
 package GDG.backend.domain.link.service;
 
 import GDG.backend.domain.businesscard.domain.BusinessCard;
-import GDG.backend.domain.businesscard.domain.repository.BusinessCardRepository;
 import GDG.backend.domain.businesscard.service.BusinessCardServiceUtils;
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.respository.LinkRepository;
+import GDG.backend.domain.link.exception.LinkExceededException;
 import GDG.backend.domain.link.exception.LinkNotFoundException;
 import GDG.backend.domain.link.presentation.dto.request.AddLinkRequest;
 import GDG.backend.domain.link.presentation.dto.request.UpdateLinkRequest;
 import GDG.backend.domain.link.presentation.dto.response.LinkProfileResponse;
-import GDG.backend.global.utils.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,25 +25,23 @@ public class LinkService implements LinkServiceUtils{
 
     // 링크 추가하기
     @Transactional
-    public List<LinkProfileResponse> addLinks(Long cardId, List<AddLinkRequest> addLinkRequests) {
+    public LinkProfileResponse addLink(Long cardId, AddLinkRequest addLinkRequest) {
         BusinessCard businessCard = businessCardServiceUtils.validHost(cardId);
 
-        List<LinkProfileResponse> linkResponses = addLinkRequests.stream()
-                .map(addLinkRequest -> {
-                    Link link = Link.addLink(
-                            businessCard,
-                            addLinkRequest.linkType(),
-                            addLinkRequest.linkUrl(),
-                            addLinkRequest.linkText()
-                    );
+        if (4 <= linkRepository.countAllByBusinessCard(businessCard)) {
+            throw LinkExceededException.EXCEPTION;
+        }
 
-                    linkRepository.save(link);
+        Link link = Link.addLink(
+                businessCard,
+                addLinkRequest.linkType(),
+                addLinkRequest.linkUrl(),
+                addLinkRequest.linkText()
+        );
 
-                    return new LinkProfileResponse(link.getLinkInfoVO());
-                })
-                .collect(Collectors.toList());
+        linkRepository.save(link);
 
-        return linkResponses;
+        return new LinkProfileResponse(link.getLinkInfoVO());
     }
 
 
