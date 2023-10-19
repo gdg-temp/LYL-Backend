@@ -33,7 +33,6 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "해당하는 정보의 사용자를 찾을 수 없습니다."),
     BUSINESS_CARD_NOT_FOUND(404, "해당하는 정보의 명함을 찾을 수 없습니다."),
     MY_BUSINESS_CARD_LIST_NOT_FOUND(404, "조회되는 명함이 없으므로 명함을 생성해주세요."),
-    TEMPLATE_NOT_FOUND(404, "해당하는 정보의 링크를 찾을 수 없습니다."),
     CARD_STORAGE_NOT_FOUND(404, "해당하는 정보의 저장된 명함을 찾을 수 없습니다."),
     LINK_NOT_FOUND(404, "해당하는 정보의 링크를 찾을 수 없습니다."),
     OAUTH_MEMBER_NOT_FOUND(404, "해당하는 로그인 정보를 찾을 수 없습니다."),

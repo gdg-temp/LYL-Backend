@@ -1,8 +1,6 @@
 package GDG.backend.domain.user.service;
 
-import GDG.backend.domain.oauth.domain.OauthMember;
 import GDG.backend.domain.oauth.domain.repository.OauthMemberRepository;
-import GDG.backend.domain.oauth.exception.OauthMemberNotFoundException;
 import GDG.backend.domain.sms.service.SmsUtils;
 import GDG.backend.domain.user.domain.RefreshToken;
 import GDG.backend.domain.user.domain.User;
