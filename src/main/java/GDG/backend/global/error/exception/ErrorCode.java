@@ -19,6 +19,8 @@ public enum ErrorCode {
     IS_NOT_VERIFICATION(400, "번호 인증에 실패했습니다."),
     NOT_EXIST_PHONE_NUM(400, "번호 인증을 진행해주세요."),
     CARD_HOST_NOT_STORAGE(400, "본인의 명함은 저장할 수 없습니다."),
+    REASONS_EXCEEDED(400, "명함의 제작 사유는 3개를 초과할 수 없습니다."),
+    LINK_EXCEEDED(400, "명함의 링크는 5개를 초과할 수 없습니다."),
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_TOKEN(401, "토큰이 유효하지 않습니다."),
@@ -42,6 +44,7 @@ public enum ErrorCode {
     BAD_FILE_EXTENSION(404,  "파일 확장자 오류입니다."),
     FILE_EMPTY(404,  "해당 파일이 비어 있습니다."),
     FILE_UPLOAD_FAIL(404,  "파일 업로드에 실패하였습니다."),
+    REASON_NOT_FOUND(404,  "해당하는 명함 제작 사유를 찾을 수 없습니다."),
 
     /* 500 SERVER_ERROR */
     INTERNAL_SERVER_ERROR(500,"서버 에러")
