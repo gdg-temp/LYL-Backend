@@ -48,7 +48,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     @Transactional
     public BusinessCardProfileResponse createBusinessCard(CreateBusinessCardRequest createBusinessCardRequest) {
         User currentUser = userUtils.getUserFromSecurityContext();
-        if (4 <= createBusinessCardRequest.texts().size()) {
+        if (4 <= createBusinessCardRequest.reasonTexts().size()) {
             throw ReasonsExceededException.EXCEPTION;
         }
 
@@ -66,7 +66,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
         businessCardRepository.save(businessCard);
 
-        createBusinessCardRequest.texts().forEach(text -> reasonServiceUtils.createReason(businessCard, text));
+        createBusinessCardRequest.reasonTexts().forEach(text -> reasonServiceUtils.createReason(businessCard, text));
 
         return createProfileResponse(businessCard);
     }
