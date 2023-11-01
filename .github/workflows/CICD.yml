@@ -76,4 +76,3 @@ jobs:
         --file-exists-behavior OVERWRITE \
         --s3-location bucket=lyl-image,bundleType=zip,key=LYL/$GITHUB_SHA.zip \
         --region ap-northeast-2 \
-
