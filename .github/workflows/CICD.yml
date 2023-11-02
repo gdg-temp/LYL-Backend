@@ -70,7 +70,7 @@ jobs:
     - name: Deploy
       run: |
         aws deploy create-deployment \
-        --application-name lyl-cd \
+        --application-name lyl-CD \
         --deployment-config-name CodeDeployDefault.AllAtOnce \
         --deployment-group-name lyl-cdg \
         --file-exists-behavior OVERWRITE \
