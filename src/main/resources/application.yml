@@ -72,6 +72,7 @@ aws:
     bucket: ${AWS_S3_BUCKET}
     base-url: ${AWS_S3_BASE_URL}
 
+
 management:
   server:
     port: ${MONITORING_PORT}
@@ -95,3 +96,8 @@ server:
       enabled: true
 
 base-secret: ${BASE_SECRET}
+
+cloud:
+  aws:
+    stack:
+      auto: false
