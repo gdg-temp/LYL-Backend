@@ -30,6 +30,8 @@ public class User extends BaseEntity {
 
     private String userName;
     private String email;
+    private boolean agreementRequired;
+    private boolean agreementAlarm;
 
     @Enumerated(STRING)
     private OauthServerType oauthServerType;
@@ -38,16 +40,20 @@ public class User extends BaseEntity {
     private List<BusinessCard> businessCardList = new ArrayList<>();
 
     @Builder
-    public User(String userName, String email, OauthServerType oauthServerType) {
+    public User(String userName, String email, boolean agreementRequired, boolean agreementAlarm, OauthServerType oauthServerType) {
         this.userName = userName;
         this.email = email;
+        this.agreementRequired = agreementRequired;
+        this.agreementAlarm = agreementAlarm;
         this.oauthServerType = oauthServerType;
     }
 
-    public static User createUser(String userName, String email, OauthServerType oauthServerType) {
+    public static User createUser(String userName, String email, boolean agreementRequired, boolean agreementAlarm, OauthServerType oauthServerType) {
         return builder()
                 .userName(userName)
                 .email(email)
+                .agreementRequired(agreementRequired)
+                .agreementAlarm(agreementAlarm)
                 .oauthServerType(oauthServerType)
                 .build();
     }
@@ -57,6 +63,8 @@ public class User extends BaseEntity {
                 id,
                 userName,
                 email,
+                agreementRequired,
+                agreementAlarm,
                 oauthServerType
         );
     }

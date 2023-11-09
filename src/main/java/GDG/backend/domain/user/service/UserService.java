@@ -38,6 +38,8 @@ public class UserService {
         User user = User.createUser(
                 signUpUserRequest.name(),
                 signUpUserRequest.email(),
+                signUpUserRequest.agreementRequired(),
+                signUpUserRequest.agreementAlarm(),
                 signUpUserRequest.oauthServerType()
         );
 

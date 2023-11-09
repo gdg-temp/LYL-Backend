@@ -6,6 +6,8 @@ public record UserInfoVO(
         Long id,
         String name,
         String email,
+        boolean agreementRequired,
+        boolean agreementAlarm,
         OauthServerType oauthServerType
 ) {
 }
