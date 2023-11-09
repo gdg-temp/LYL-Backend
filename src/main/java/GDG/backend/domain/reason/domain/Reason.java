@@ -40,7 +40,7 @@ public class Reason {
     }
 
     public ReasonInfoVO getReasonInfoVO() {
-        return new ReasonInfoVO(id, text);
+        return new ReasonInfoVO(text);
     }
 
     public void setBusinessCard(BusinessCard card) {

@@ -9,7 +9,6 @@ import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardPro
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
 import GDG.backend.domain.reason.domain.Reason;
-import GDG.backend.domain.reason.domain.vo.ReasonInfoVO;
 import GDG.backend.domain.reason.exception.ReasonsExceededException;
 import GDG.backend.domain.reason.service.ReasonServiceUtils;
 import GDG.backend.domain.user.domain.User;
@@ -93,8 +92,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        List<ReasonInfoVO> reasonInfos = card.getReasons().stream()
-                .map(Reason::getReasonInfoVO)
+        List<String> reasonTexts = card.getReasons().stream()
+                .map(Reason::getText)
                 .collect(Collectors.toList());
 
         User user = userUtils.getUserFromSecurityContext();
@@ -107,7 +106,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 encodeId,
                 card.getBusinessCardInfo(),
                 isMine,
-                reasonInfos,
+                reasonTexts,
                 linkInfos
         );
     }
@@ -133,11 +132,11 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        List<ReasonInfoVO> reasonInfos = card.getReasons().stream()
-                .map(Reason::getReasonInfoVO)
+        List<String> reasonTexts = card.getReasons().stream()
+                .map(Reason::getText)
                 .collect(Collectors.toList());
 
-        return new BusinessCardProfileResponse(id, card.getBusinessCardInfo(), isMine, reasonInfos, linkInfos);
+        return new BusinessCardProfileResponse(id, card.getBusinessCardInfo(), isMine, reasonTexts, linkInfos);
     }
 
      // 명함 정보 수정하기

@@ -23,13 +23,13 @@ public record BusinessCardProfileResponse(
         @Nullable
         String position,
         Boolean isMine,
-        List<ReasonInfoVO> reasonInfoVOList,
+        List<String> reasonTexts,
         @Nullable
         List<LinkInfoVO> linkInfoVOList
 ) {
-    public BusinessCardProfileResponse (String encodeId, BusinessCardInfoVO businessCardInfoVO, Boolean isMine, List<ReasonInfoVO> reasonInfoVOList,  List<LinkInfoVO> links) {
+    public BusinessCardProfileResponse (String encodeId, BusinessCardInfoVO businessCardInfoVO, Boolean isMine, List<String> reasonTexts,  List<LinkInfoVO> links) {
         this(encodeId, businessCardInfoVO.cardId(), businessCardInfoVO.name(), businessCardInfoVO.profileImage(), businessCardInfoVO.email()
                 , businessCardInfoVO.introduction(), businessCardInfoVO.styleTemplate(), businessCardInfoVO.designTemplate()
-                , businessCardInfoVO.companyName(), businessCardInfoVO.position(), isMine, reasonInfoVOList, links);
+                , businessCardInfoVO.companyName(), businessCardInfoVO.position(), isMine, reasonTexts, links);
     }
 }
