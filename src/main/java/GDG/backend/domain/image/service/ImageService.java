@@ -2,6 +2,7 @@ package GDG.backend.domain.image.service;
 
 import GDG.backend.domain.image.exception.BadFileExtensionException;
 import GDG.backend.domain.image.exception.FileEmptyException;
+import GDG.backend.domain.image.exception.FileSizeException;
 import GDG.backend.domain.image.exception.FileUploadFailException;
 import GDG.backend.domain.image.presentation.dto.UploadImageResponse;
 import GDG.backend.global.utils.security.SecurityUtils;
@@ -30,6 +31,8 @@ public class ImageService implements ImageUtils{
     @Value("${aws.s3.base-url}")
     private String baseUrl;
 
+    private final static int IMAGE_SIZE = 50;
+
     private final AmazonS3 amazonS3;
 
     public UploadImageResponse uploadImage(MultipartFile file) {
@@ -40,6 +43,11 @@ public class ImageService implements ImageUtils{
     public String upload(MultipartFile file) {
         if (file.isEmpty() && file.getOriginalFilename() != null)
             throw FileEmptyException.EXCEPTION;
+
+        if (file.getSize() <= IMAGE_SIZE) {
+            throw FileSizeException.EXCEPTION;
+        }
+
         String originalFilename = file.getOriginalFilename();
         String ext = originalFilename.substring(originalFilename.lastIndexOf(".") + 1);
 

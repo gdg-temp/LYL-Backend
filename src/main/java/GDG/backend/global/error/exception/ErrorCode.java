@@ -41,6 +41,7 @@ public enum ErrorCode {
     AUTHENTICATION_TIME_OUT(404, "인증 시간이 만료되었습니다."),
     NO_ERROR_TYPE(404, "오류 발생"),
     BAD_FILE_EXTENSION(404,  "파일 확장자 오류입니다."),
+    IMAGE_SIZE_EXTENSION(404,  "파일 크기 오류입니다."),
     FILE_EMPTY(404,  "해당 파일이 비어 있습니다."),
     FILE_UPLOAD_FAIL(404,  "파일 업로드에 실패하였습니다."),
     REASON_NOT_FOUND(404,  "해당하는 명함 제작 사유를 찾을 수 없습니다."),
