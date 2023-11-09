@@ -38,8 +38,8 @@ public class OauthController {
     @SecurityRequirements
     @Operation(summary = "Token 재발급")
     @PostMapping("/refresh")
-    public void refreshingToken(@RequestBody TokenRefreshRequest tokenRefreshRequest) {
-        oauthService.tokenRefresh(tokenRefreshRequest.refreshToken());
+    public void refreshingToken(@RequestBody TokenRefreshRequest tokenRefreshRequest, HttpServletResponse response) {
+        oauthService.tokenRefresh(response, tokenRefreshRequest.refreshToken());
     }
 
     @GetMapping

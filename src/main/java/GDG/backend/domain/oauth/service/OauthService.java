@@ -67,7 +67,7 @@ public class OauthService {
     }
 
     @Transactional
-    public void tokenRefresh(String requestRefreshToken) {
+    public void tokenRefresh(HttpServletResponse response, String requestRefreshToken) {
         RefreshToken getRefreshToken = refreshTokenRepository.findByRefreshToken(requestRefreshToken).orElseThrow(() -> RefreshTokenExpiredException.EXCEPTION);
 
         Long userId = jwtTokenProvider.parseRefreshToken(requestRefreshToken);
@@ -78,7 +78,11 @@ public class OauthService {
 
         User user = userUtils.getUserById(userId);
 
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId());
+
+        jwtTokenProvider.setHeaderAccessToken(response, accessToken);
+        jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
 
         getRefreshToken.updateRefreshToken(refreshToken);
     }
