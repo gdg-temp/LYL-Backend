@@ -6,13 +6,17 @@ spring:
     password: ${MARIADB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: ture
         dialect:
   main:
     allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 auth:
   jwt:
@@ -96,8 +100,3 @@ server:
       enabled: true
 
 base-secret: ${BASE_SECRET}
-
-cloud:
-  aws:
-    stack:
-      auto: false
