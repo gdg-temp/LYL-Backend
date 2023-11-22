@@ -22,7 +22,7 @@ public class LinkController {
     private final LinkService linkService;
 
     @Operation(summary = "링크 추가하기")
-    @PostMapping("/{cardId}")
+    @PostMapping("/{encodeId}")
     public LinkProfileResponse addLink(
             @Parameter(description = "명함 encodeId", in = PATH)
             @PathVariable String encodeId,
