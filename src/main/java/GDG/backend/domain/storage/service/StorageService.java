@@ -36,8 +36,9 @@ public class StorageService {
     private final BusinessCardServiceUtils businessCardServiceUtils;
 
     @Transactional
-    public StorageProfileResponse saveStorage(Long cardId) {
+    public StorageProfileResponse saveStorage(String encodeId) {
         User user = userUtils.getUserFromSecurityContext();
+        Long cardId = businessCardServiceUtils.decodeId(encodeId);
         BusinessCard businessCard = businessCardServiceUtils.queryBusinessCard(cardId);
 
         if (storageRepository.existsByUserAndBusinessCard(user, businessCard)) {

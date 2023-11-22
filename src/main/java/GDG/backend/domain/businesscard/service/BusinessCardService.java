@@ -113,8 +113,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
 
     // 해당 명함 조회하기
-    public BusinessCardProfileResponse getBusinessCardProfile(String id) {
-        Long cardId = decodeId(id);
+    public BusinessCardProfileResponse getBusinessCardProfile(String encodeId) {
+        Long cardId = decodeId(encodeId);
         BusinessCard card = queryBusinessCard(cardId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         boolean isMine = TRUE;
@@ -136,11 +136,12 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 .map(Reason::getText)
                 .collect(Collectors.toList());
 
-        return new BusinessCardProfileResponse(id, card.getBusinessCardInfo(), isMine, reasonTexts, linkInfos);
+        return new BusinessCardProfileResponse(encodeId, card.getBusinessCardInfo(), isMine, reasonTexts, linkInfos);
     }
 
      // 명함 정보 수정하기
-    public BusinessCardProfileResponse updateBusinessCardProfile(Long cardId, ChangeProfileRequest changeProfileRequest) {
+    public BusinessCardProfileResponse updateBusinessCardProfile(String encodeId, ChangeProfileRequest changeProfileRequest) {
+        Long cardId = decodeId(encodeId);
         BusinessCard businessCard = validHost(cardId);
 
         businessCard.changeProfile(
@@ -159,7 +160,8 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     // 명함 삭제하기
     @Transactional
-    public void deleteBusinessCard(Long cardId) {
+    public void deleteBusinessCard(String encodeId) {
+        Long cardId = decodeId(encodeId);
         BusinessCard businessCard = validHost(cardId);
 
         businessCardRepository.delete(businessCard);
@@ -172,10 +174,11 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         return textEncryptor.encrypt(id.toString());
     }
 
-    private Long decodeId(String id) {
+    @Override
+    public Long decodeId(String encodeId) {
         BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
         textEncryptor.setPassword(baseSecret);
-        return Long.parseLong(textEncryptor.decrypt(id));
+        return Long.parseLong(textEncryptor.decrypt(encodeId));
     }
 
     @Override

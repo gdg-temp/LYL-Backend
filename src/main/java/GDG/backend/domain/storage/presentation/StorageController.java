@@ -22,9 +22,9 @@ public class StorageController {
     private final StorageService storageService;
 
     @Operation(summary = "다른 사람의 명함 저장하기")
-    @PostMapping("/{cardId}")
-    public StorageProfileResponse saveStorage(@Parameter(description = "저장할 명함 Id", in = PATH) @PathVariable Long cardId) {
-        return storageService.saveStorage(cardId);
+    @PostMapping("/{encodeId}")
+    public StorageProfileResponse saveStorage(@Parameter(description = "저장할 명함 encodeId", in = PATH) @PathVariable String encodeId) {
+        return storageService.saveStorage(encodeId);
     }
 
     @Operation(summary = "저장한 명함 삭제하기")

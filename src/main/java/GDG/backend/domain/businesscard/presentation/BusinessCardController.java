@@ -30,9 +30,9 @@ public class BusinessCardController {
     }
 
     @Operation(summary = "해당 명함 조회하기")
-    @GetMapping("/cards/{id}")
-    public BusinessCardProfileResponse getBusinessCardProfile(@Parameter(description = "명함 Id", in = PATH) @PathVariable String id) {
-        return businessCardService.getBusinessCardProfile(id);
+    @GetMapping("/cards/{encodeId}")
+    public BusinessCardProfileResponse getBusinessCardProfile(@Parameter(description = "명함 encodeId", in = PATH) @PathVariable String encodeId) {
+        return businessCardService.getBusinessCardProfile(encodeId);
     }
 
     @Operation(summary = "명함 목록 조회하기")
@@ -42,15 +42,15 @@ public class BusinessCardController {
     }
 
     @Operation(summary = "명함 수정하기")
-    @PutMapping("/{id}/edit")
+    @PutMapping("/{encodeId}/edit")
     public BusinessCardProfileResponse changeProfile(@RequestBody @Valid ChangeProfileRequest changeProfileRequest
-            , @Parameter(description = "명함 Id", in = PATH) @PathVariable Long id) {
-        return businessCardService.updateBusinessCardProfile(id, changeProfileRequest);
+            , @Parameter(description = "명함 encodeId", in = PATH) @PathVariable String encodeId) {
+        return businessCardService.updateBusinessCardProfile(encodeId, changeProfileRequest);
     }
 
     @Operation(summary = "명함 삭제하기")
-    @DeleteMapping("/cards/{id}")
-    public void deleteBusinessCard(@Parameter(description = "명함 Id", in = PATH) @PathVariable Long id) {
-        businessCardService.deleteBusinessCard(id);
+    @DeleteMapping("/cards/{encodeId}")
+    public void deleteBusinessCard(@Parameter(description = "명함 encodeId", in = PATH) @PathVariable String encodeId) {
+        businessCardService.deleteBusinessCard(encodeId);
     }
 }
