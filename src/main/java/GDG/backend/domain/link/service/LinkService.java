@@ -25,7 +25,8 @@ public class LinkService implements LinkServiceUtils{
 
     // 링크 추가하기
     @Transactional
-    public LinkProfileResponse addLink(Long cardId, AddLinkRequest addLinkRequest) {
+    public LinkProfileResponse addLink(String encodeId, AddLinkRequest addLinkRequest) {
+        Long cardId = businessCardServiceUtils.decodeId(encodeId);
         BusinessCard businessCard = businessCardServiceUtils.validHost(cardId);
 
         if (4 <= linkRepository.countAllByBusinessCard(businessCard)) {

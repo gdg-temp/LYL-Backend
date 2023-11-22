@@ -24,10 +24,10 @@ public class LinkController {
     @Operation(summary = "링크 추가하기")
     @PostMapping("/{cardId}")
     public LinkProfileResponse addLink(
-            @Parameter(description = "명함 Id", in = PATH)
-            @PathVariable Long cardId,
+            @Parameter(description = "명함 encodeId", in = PATH)
+            @PathVariable String encodeId,
             @RequestBody @Valid AddLinkRequest addLinkRequest) {
-        return linkService.addLink(cardId, addLinkRequest);
+        return linkService.addLink(encodeId, addLinkRequest);
     }
 
     @Operation(summary = "링크 수정하기")
