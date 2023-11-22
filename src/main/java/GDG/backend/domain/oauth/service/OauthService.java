@@ -46,11 +46,13 @@ public class OauthService {
     }
 
     // 추가
+    @Transactional
     public OauthLoginResponse login(OauthServerType oauthServerType, String authCode, HttpServletResponse response) {
         OauthMember oauthMember = oauthMemberClientComposite.fetch(oauthServerType, authCode);
         OauthMember saved = oauthMemberRepository.findByOauthServerTypeAndEmail(oauthMember.getOauthServerType(), oauthMember.getEmail())
                 .orElseGet(() -> oauthMemberRepository.save(oauthMember));
         Optional<User> savedUser = userRepository.findByOauthServerTypeAndEmail(saved.getOauthServerType(), saved.getEmail());
+
         if (!savedUser.isPresent()) {
             return new OauthLoginResponse(saved.getOauthMemberInfo(), TRUE);
         }
@@ -58,10 +60,11 @@ public class OauthService {
         String accessToken = jwtTokenProvider.generateAccessToken(saved.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(saved.getId());
 
+        RefreshToken userRefreshToken = refreshTokenRepository.findByUserId(savedUser.get().getId());
+        userRefreshToken.updateRefreshToken(refreshToken);
+
         jwtTokenProvider.setHeaderAccessToken(response, accessToken);
         jwtTokenProvider.setHeaderRefreshToken(response, refreshToken);
-
-        refreshTokenRepository.save(new RefreshToken(refreshToken, savedUser.get().getId()));
 
         return new OauthLoginResponse(saved.getOauthMemberInfo(), FALSE);
     }
