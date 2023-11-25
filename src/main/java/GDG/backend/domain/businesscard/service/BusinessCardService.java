@@ -59,13 +59,14 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 createBusinessCardRequest.introduction(),
                 createBusinessCardRequest.styleTemplate(),
                 createBusinessCardRequest.designTemplate(),
+                createBusinessCardRequest.reasonTexts(),
                 createBusinessCardRequest.companyName(),
                 createBusinessCardRequest.position()
         );
 
         businessCardRepository.save(businessCard);
-
-        createBusinessCardRequest.reasonTexts().forEach(text -> reasonServiceUtils.createReason(businessCard, text));
+        String encodeId = encodeId(businessCard.getId());
+        businessCard.registerEncodeId(encodeId);
 
         return createProfileResponse(businessCard);
     }
@@ -92,14 +93,10 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        List<String> reasonTexts = card.getReasons().stream()
-                .map(Reason::getText)
-                .collect(Collectors.toList());
+        List<String> reasonTexts = card.getReason();
 
         User user = userUtils.getUserFromSecurityContext();
-
-        String encodeId = encodeId(card.getId());
-
+        String encodeId = card.getEncodeId();
         Boolean isMine = (user == card.getUser());
 
         return new BusinessCardProfileResponse(
@@ -132,9 +129,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        List<String> reasonTexts = card.getReasons().stream()
-                .map(Reason::getText)
-                .collect(Collectors.toList());
+        List<String> reasonTexts = card.getReason();
 
         return new BusinessCardProfileResponse(encodeId, card.getBusinessCardInfo(), isMine, reasonTexts, linkInfos);
     }
@@ -149,6 +144,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 changeProfileRequest.name(),
                 changeProfileRequest.email(),
                 changeProfileRequest.introduction(),
+                changeProfileRequest.reasonTexts(),
                 changeProfileRequest.styleTemplate(),
                 changeProfileRequest.designTemplate(),
                 changeProfileRequest.companyName(),

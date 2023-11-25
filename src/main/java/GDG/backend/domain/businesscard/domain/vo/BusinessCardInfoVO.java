@@ -1,5 +1,7 @@
 package GDG.backend.domain.businesscard.domain.vo;
 
+import java.util.List;
+
 public record BusinessCardInfoVO(
         Long cardId,
 
@@ -9,8 +11,10 @@ public record BusinessCardInfoVO(
         String introduction,
         String styleTemplate,
         String designTemplate,
+        List<String> reason,
         String companyName,
-        String position
+        String position,
+        String encodeId
 
 ) {
 }
