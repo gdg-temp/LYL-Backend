@@ -22,7 +22,7 @@ public class UserController {
 
     @SecurityRequirements
     @Operation(summary = "회원가입")
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public SignUpResponse signUpUser(@RequestBody @Valid SignUpUserRequest signUpUserRequest, HttpServletResponse response) {
         return userService.signUp(signUpUserRequest, response);
     }

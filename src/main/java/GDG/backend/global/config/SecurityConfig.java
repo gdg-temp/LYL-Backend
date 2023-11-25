@@ -3,11 +3,9 @@ package GDG.backend.global.config;
 import GDG.backend.global.security.JwtTokenFilter;
 import GDG.backend.global.security.JwtTokenProvider;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/sms/**").permitAll()
                         .requestMatchers("/api/login/{oauthServerType}").permitAll()
                         .requestMatchers("/api/refresh").permitAll()
-                        .requestMatchers("/api/signUp").permitAll()
+                        .requestMatchers("/api/signup").permitAll()
                         .requestMatchers("/api").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/api/images").permitAll()
