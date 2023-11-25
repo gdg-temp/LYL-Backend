@@ -22,12 +22,12 @@ public class LinkController {
     private final LinkService linkService;
 
     @Operation(summary = "링크 추가하기")
-    @PostMapping("/{encodeId}")
+    @PostMapping("/{encodedId}")
     public LinkProfileResponse addLink(
-            @Parameter(description = "명함 encodeId", in = PATH)
-            @PathVariable String encodeId,
+            @Parameter(description = "명함 encodedId", in = PATH)
+            @PathVariable String encodedId,
             @RequestBody @Valid AddLinkRequest addLinkRequest) {
-        return linkService.addLink(encodeId, addLinkRequest);
+        return linkService.addLink(encodedId, addLinkRequest);
     }
 
     @Operation(summary = "링크 수정하기")
