@@ -42,9 +42,4 @@ public class Reason {
     public ReasonInfoVO getReasonInfoVO() {
         return new ReasonInfoVO(text);
     }
-
-    public void setBusinessCard(BusinessCard card) {
-        this.businessCard = card;
-        card.getReasons().add(this);
-    }
 }

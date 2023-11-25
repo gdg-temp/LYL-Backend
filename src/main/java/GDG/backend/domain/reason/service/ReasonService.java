@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -26,10 +28,14 @@ public class ReasonService implements ReasonServiceUtils{
 //            throw
 //        }
         Reason reason = Reason.addReason(text, card);
-
         reasonRepository.save(reason);
-        reason.setBusinessCard(card);
+//        reason.setBusinessCard(card);
         return reason;
+    }
+
+    @Override
+    public void deleteReason(Reason reason) {
+        reasonRepository.delete(reason);
     }
 
     @Override

@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ReasonRepository extends JpaRepository<Reason, Long> {
 
+    List<Reason> findAllByBusinessCard(BusinessCard card);
     Long countAllByBusinessCard(BusinessCard card);
 }

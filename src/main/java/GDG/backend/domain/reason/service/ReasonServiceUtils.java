@@ -8,4 +8,6 @@ public interface ReasonServiceUtils {
     Reason queryReason(Long reasonId);
 
     Reason createReason(BusinessCard card, String text);
+
+    void deleteReason(Reason reason);
 }
