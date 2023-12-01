@@ -98,5 +98,3 @@ server:
   tomcat:
     mbeanregistry:
       enabled: true
-
-base-secret: ${BASE_SECRET}
