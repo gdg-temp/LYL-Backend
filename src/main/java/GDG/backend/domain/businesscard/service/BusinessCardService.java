@@ -3,20 +3,18 @@ package GDG.backend.domain.businesscard.service;
 import GDG.backend.domain.businesscard.domain.BusinessCard;
 import GDG.backend.domain.businesscard.domain.repository.BusinessCardRepository;
 import GDG.backend.domain.businesscard.exception.BusinessCardNotFoundException;
+import GDG.backend.domain.businesscard.exception.ReasonsExceededException;
 import GDG.backend.domain.businesscard.presentation.dto.request.ChangeProfileRequest;
 import GDG.backend.domain.businesscard.presentation.dto.request.CreateBusinessCardRequest;
 import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardProfileResponse;
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
-import GDG.backend.domain.reason.exception.ReasonsExceededException;
-import GDG.backend.domain.reason.service.ReasonServiceUtils;
 import GDG.backend.domain.user.domain.User;
 import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -130,6 +128,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     }
 
      // 명함 정보 수정하기
+    @Transactional
     public BusinessCardProfileResponse updateBusinessCardProfile(String encodeId, ChangeProfileRequest changeProfileRequest) {
         Long cardId = decodeId(encodeId);
         BusinessCard businessCard = validHost(cardId);

@@ -2,7 +2,6 @@ package GDG.backend.domain.businesscard.presentation.dto.response;
 
 import GDG.backend.domain.businesscard.domain.vo.BusinessCardInfoVO;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
-import GDG.backend.domain.reason.domain.vo.ReasonInfoVO;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 
