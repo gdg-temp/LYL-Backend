@@ -8,7 +8,6 @@ import GDG.backend.domain.businesscard.presentation.dto.request.CreateBusinessCa
 import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardProfileResponse;
 import GDG.backend.domain.link.domain.Link;
 import GDG.backend.domain.link.domain.vo.LinkInfoVO;
-import GDG.backend.domain.reason.domain.Reason;
 import GDG.backend.domain.reason.exception.ReasonsExceededException;
 import GDG.backend.domain.reason.service.ReasonServiceUtils;
 import GDG.backend.domain.user.domain.User;
@@ -16,7 +15,7 @@ import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jasypt.util.text.BasicTextEncryptor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,10 +37,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
 
     private final BusinessCardRepository businessCardRepository;
     private final UserUtils userUtils;
-    private final ReasonServiceUtils reasonServiceUtils;
-
-    @Value("${base-secret}")
-    private String baseSecret;
 
     // 명함 생성하기
     @Transactional
@@ -164,17 +159,14 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     }
 
     private String encodeId(Long id) {
-        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(baseSecret);
+        String generatedString = RandomStringUtils.randomAlphanumeric(10) + id;
 
-        return textEncryptor.encrypt(id.toString());
+        return generatedString;
     }
 
     @Override
     public Long decodeId(String encodeId) {
-        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-        textEncryptor.setPassword(baseSecret);
-        return Long.parseLong(textEncryptor.decrypt(encodeId));
+        return businessCardRepository.findByEncodeId(encodeId).orElseThrow(() -> BusinessCardNotFoundException.EXCEPTION).getId();
     }
 
     @Override
