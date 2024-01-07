@@ -66,4 +66,13 @@ public class UserService {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         refreshTokenRepository.deleteByUserId(currentUserId);
     }
+
+    @Transactional
+    public void userWithdraw() {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        refreshTokenRepository.deleteByUserId(currentUserId);
+
+        User currentUser = userUtils.getUserById(currentUserId);
+        userRepository.delete(currentUser);
+    }
 }

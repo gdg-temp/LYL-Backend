@@ -38,4 +38,10 @@ public class UserController {
     public void logout() {
         userService.logout();
     }
+
+    @Operation(summary = "회원 탈퇴")
+    @DeleteMapping("/withdraw")
+    public void userWithdraw() {
+        userService.userWithdraw();
+    }
 }
