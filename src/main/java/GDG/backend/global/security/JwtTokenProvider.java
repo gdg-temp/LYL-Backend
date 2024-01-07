@@ -49,6 +49,28 @@ public class JwtTokenProvider {
         return null;
     }
 
+    public String resolveAccessToken(HttpServletRequest request) {
+        return resolveCookie(request, "LYL_TOKEN");
+    }
+
+    public String resolveRefreshToken(HttpServletRequest request) {
+        return resolveCookie(request, "LYL_TOKEN_REFRESH");
+    }
+
+    private String resolveCookie(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(cookieName)) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
+        return null;
+    }
+
     public Authentication getAuthentication(String token) {
         String id = getJws(token).getBody().getSubject();
         UserDetails userDetails = new AuthDetails(id);
