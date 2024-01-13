@@ -15,7 +15,7 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.PATH;
 
 @Tag(name = "명함 저장", description = "다른 사람 명함 관련 API")
 @RestController
-@RequestMapping("/api/collection")
+@RequestMapping("/api/collections")
 @RequiredArgsConstructor
 public class StorageController {
 
