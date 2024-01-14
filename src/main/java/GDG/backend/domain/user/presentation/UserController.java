@@ -35,13 +35,13 @@ public class UserController {
 
     @Operation(summary = "로그아웃")
     @PostMapping("/logout")
-    public void logout() {
-        userService.logout();
+    public void logout(HttpServletResponse response) {
+        userService.logout(response);
     }
 
     @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/withdraw")
-    public void userWithdraw() {
-        userService.userWithdraw();
+    public void userWithdraw(HttpServletResponse response) {
+        userService.userWithdraw(response);
     }
 }

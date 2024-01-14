@@ -1,5 +1,6 @@
 package GDG.backend.domain.user.service;
 
+import GDG.backend.domain.oauth.domain.OauthMember;
 import GDG.backend.domain.oauth.domain.repository.OauthMemberRepository;
 import GDG.backend.domain.sms.service.SmsUtils;
 import GDG.backend.domain.user.domain.RefreshToken;
@@ -9,6 +10,7 @@ import GDG.backend.domain.user.domain.repository.UserRepository;
 import GDG.backend.domain.user.presentation.dto.request.SignUpUserRequest;
 import GDG.backend.domain.user.presentation.dto.response.SignUpResponse;
 import GDG.backend.domain.user.presentation.dto.response.UserProfileResponse;
+import GDG.backend.global.exception.UserNotFoundException;
 import GDG.backend.global.security.JwtTokenProvider;
 import GDG.backend.global.utils.security.SecurityUtils;
 import GDG.backend.global.utils.user.UserUtils;
@@ -62,17 +64,27 @@ public class UserService {
     }
 
     @Transactional
-    public void logout() {
+    public void logout(HttpServletResponse response) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         refreshTokenRepository.deleteByUserId(currentUserId);
+
+        jwtTokenProvider.setHeaderAccessTokenEmpty(response);
+        jwtTokenProvider.setHeaderRefreshTokenEmpty(response);
     }
 
     @Transactional
-    public void userWithdraw() {
+    public void userWithdraw(HttpServletResponse response) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         refreshTokenRepository.deleteByUserId(currentUserId);
 
         User currentUser = userUtils.getUserById(currentUserId);
+        OauthMember oauthMember = oauthMemberRepository
+                .findByOauthServerTypeAndEmail(currentUser.getOauthServerType(), currentUser.getEmail())
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        oauthMemberRepository.delete(oauthMember);
         userRepository.delete(currentUser);
+
+        jwtTokenProvider.setHeaderAccessTokenEmpty(response);
+        jwtTokenProvider.setHeaderRefreshTokenEmpty(response);
     }
 }
