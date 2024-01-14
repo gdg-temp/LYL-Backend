@@ -60,7 +60,12 @@ public class OauthService {
         String accessToken = jwtTokenProvider.generateAccessToken(saved.getId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(saved.getId());
 
-        RefreshToken userRefreshToken = refreshTokenRepository.findByUserId(savedUser.get().getId());
+        RefreshToken userRefreshToken = refreshTokenRepository.findByUserId(savedUser.get().getId())
+                .orElseGet(() -> {
+                    RefreshToken newRefreshToken = new RefreshToken(refreshToken, savedUser.get().getId());
+                    return refreshTokenRepository.save(newRefreshToken);
+                });
+
         userRefreshToken.updateRefreshToken(refreshToken);
 
         jwtTokenProvider.setHeaderAccessToken(response, accessToken);
