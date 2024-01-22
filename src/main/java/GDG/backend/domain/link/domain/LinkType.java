@@ -7,19 +7,19 @@ import lombok.Getter;
 @Getter
 public enum LinkType {
 
-    CUSTOM("직접 입력"),
-    GITHUB("Github"),
-    BEHANCE("Behance"),
-    TISTORY("Tistory"),
-    LINKEDIN("LinkedIn"),
-    NAVERBLOG("NaverBlog"),
-    INSTAGRAM("Instagram"),
-    NOTION("Notion"),
-    MEDIUM("Medium"),
-    X("X"),
-    THREAD("Thread"),
-    YOUTUBE("YouTube"),
-    TIKTOK("Tiktok");
+    custom("직접 입력"),
+    github("github"),
+    behance("behance"),
+    tistory("tistory"),
+    linkedIn("linkedIn"),
+    naverblog("naverblog"),
+    instagram("instagram"),
+    notion("notion"),
+    medium("medium"),
+    x("x"),
+    thread("thread"),
+    youtube("youtube"),
+    tiktok("tiktok");
 
     private String value;
 }
