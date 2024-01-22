@@ -142,7 +142,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 changeProfileRequest.styleTemplate(),
                 changeProfileRequest.designTemplate(),
                 changeProfileRequest.companyName(),
-                changeProfileRequest.companyName()
+                changeProfileRequest.position()
         );
 
         return createProfileResponse(businessCard);
