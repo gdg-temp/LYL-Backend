@@ -25,8 +25,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse =
                 new ErrorResponse(
                         code.getStatus(),
-                        code.getReason(),
-                        request.getRequestURL().toString());
+                        code.getReason());
         return ResponseEntity.status(HttpStatus.valueOf(code.getStatus())).body(errorResponse);
     }
 
@@ -34,19 +33,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(Exception e, HttpServletRequest request)
             throws IOException {
-        String url =
-                UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(request))
-                        .build()
-                        .toUriString();
 
         log.error("INTERNAL_SERVER_ERROR", e);
         ErrorCode internalServerError = ErrorCode.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse =
                 new ErrorResponse(
                         internalServerError.getStatus(),
-                        internalServerError.getReason(),
-                        url);
-
+                        internalServerError.getReason());
         return ResponseEntity.status(HttpStatus.valueOf(internalServerError.getStatus()))
                 .body(errorResponse);
     }

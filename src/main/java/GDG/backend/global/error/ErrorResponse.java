@@ -11,13 +11,11 @@ public class ErrorResponse {
     private final int status;
     private final String reason;
     private final LocalDateTime timeStamp;
-    private final String path;
 
 
-    public ErrorResponse(int status, String reason, String path) {
+    public ErrorResponse(int status, String reason) {
         this.status = status;
         this.reason = reason;
         this.timeStamp = LocalDateTime.now();
-        this.path = path;
     }
 }
