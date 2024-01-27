@@ -107,10 +107,10 @@ public class BusinessCardService implements BusinessCardServiceUtils{
         Long cardId = decodeId(encodeId);
         BusinessCard card = queryBusinessCard(cardId);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        boolean isMine = TRUE;
+        boolean isMine = true;
 
-        if (authentication.getPrincipal() == "anonymousUser" || userUtils.getUserFromSecurityContext() != card.getUser()) {
-            isMine = FALSE;
+        if ("anonymousUser".equals(authentication.getPrincipal()) || !userUtils.getUserFromSecurityContext().equals(card.getUser())) {
+            isMine = false;
         }
 
         List<LinkInfoVO> linkInfos;
