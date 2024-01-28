@@ -81,8 +81,8 @@ public class UserService {
         OauthMember oauthMember = oauthMemberRepository
                 .findByOauthServerTypeAndEmail(currentUser.getOauthServerType(), currentUser.getEmail())
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
-        oauthMemberRepository.delete(oauthMember);
         userRepository.delete(currentUser);
+        oauthMemberRepository.delete(oauthMember);
 
         jwtTokenProvider.setHeaderAccessTokenEmpty(response);
         jwtTokenProvider.setHeaderRefreshTokenEmpty(response);
