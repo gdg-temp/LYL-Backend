@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.CascadeType.REMOVE;
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -36,7 +37,7 @@ public class User extends BaseEntity {
     @Enumerated(STRING)
     private OauthServerType oauthServerType;
 
-    @OneToMany(mappedBy = "user", cascade = ALL)
+    @OneToMany(mappedBy = "user", cascade = REMOVE)
     private List<BusinessCard> businessCardList = new ArrayList<>();
 
     @Builder
