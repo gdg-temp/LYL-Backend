@@ -2,6 +2,7 @@ package GDG.backend.domain.user.domain;
 
 import GDG.backend.domain.businesscard.domain.BusinessCard;
 import GDG.backend.domain.oauth.domain.OauthServerType;
+import GDG.backend.domain.storage.domain.Storage;
 import GDG.backend.domain.user.domain.vo.UserInfoVO;
 import GDG.backend.global.database.BaseEntity;
 import jakarta.persistence.*;
@@ -39,6 +40,9 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = REMOVE)
     private List<BusinessCard> businessCardList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = REMOVE)
+    private List<Storage> storageList = new ArrayList<>();
 
     @Builder
     public User(String userName, String email, boolean agreementRequired, boolean agreementAlarm, OauthServerType oauthServerType) {
