@@ -9,8 +9,8 @@ import jakarta.annotation.Nullable;
 import java.util.List;
 
 public record StorageProfileResponse(
+        String encodeId,
         Long cardId,
-
         String name,
         @Schema(description = "프로필 이미지 URL")
         String profileImage,
@@ -24,10 +24,10 @@ public record StorageProfileResponse(
         String position,
         Boolean isMine,
         @Nullable
-        List<LinkInfoVO> linkInfoVOList
+        List<LinkInfoVO> links
 ) {
-    public StorageProfileResponse (BusinessCardInfoVO businessCardInfoVO, Boolean isMine,  List<LinkInfoVO> links) {
-        this(businessCardInfoVO.cardId(), businessCardInfoVO.name(), businessCardInfoVO.profileImage(), businessCardInfoVO.email()
+    public StorageProfileResponse (BusinessCardInfoVO businessCardInfoVO, Boolean isMine, List<LinkInfoVO> links) {
+        this(businessCardInfoVO.encodeId(), businessCardInfoVO.cardId(), businessCardInfoVO.name(), businessCardInfoVO.profileImage(), businessCardInfoVO.email()
                 , businessCardInfoVO.introduction(), businessCardInfoVO.styleTemplate(), businessCardInfoVO.designTemplate()
                 , businessCardInfoVO.companyName(), businessCardInfoVO.position(), isMine, links);
     }
