@@ -46,6 +46,9 @@ public enum ErrorCode {
     FILE_UPLOAD_FAIL(404,  "파일 업로드에 실패하였습니다."),
     REASON_NOT_FOUND(404,  "해당하는 명함 제작 사유를 찾을 수 없습니다."),
 
+    /* 414 Payload Too Large */
+    CARD_NUM_EXCEEDED(414, "명함의 개수는 5개를 초과할 수 없습니다."),
+
     /* 500 SERVER_ERROR */
     INTERNAL_SERVER_ERROR(500,"서버 에러")
             ;
