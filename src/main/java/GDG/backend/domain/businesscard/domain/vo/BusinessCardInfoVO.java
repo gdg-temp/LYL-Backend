@@ -11,7 +11,6 @@ public record BusinessCardInfoVO(
         String introduction,
         String styleTemplate,
         String designTemplate,
-        List<String> reason,
         String companyName,
         String position,
         String encodeId

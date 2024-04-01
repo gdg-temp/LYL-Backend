@@ -39,9 +39,6 @@ public class BusinessCard {
     private String styleTemplate;
     private String designTemplate;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    private List<String> reason = new ArrayList<>();
-
     @OneToMany(mappedBy = "businessCard", cascade = REMOVE)
     private List<Link> links = new ArrayList<>();
 
@@ -54,7 +51,7 @@ public class BusinessCard {
 
     @Builder
     public BusinessCard(User user, String profileImage, String name, String email, String introduction, String styleTemplate,
-                        String designTemplate, List<String> reason, String companyName, String position, String encodeId) {
+                        String designTemplate, String companyName, String position, String encodeId) {
         this.user = user;
         this.profileImage = profileImage;
         this.name = name;
@@ -62,14 +59,13 @@ public class BusinessCard {
         this.introduction = introduction;
         this.styleTemplate = styleTemplate;
         this.designTemplate = designTemplate;
-        this.reason = reason;
         this.companyName = companyName;
         this.position = position;
         this.encodeId = encodeId;
     }
 
     public static BusinessCard createBusinessCard(User user, String profileImage, String name, String email, String introduction, String styleTemplate,
-                                                  String designTemplate, List<String> reason, String companyName, String position) {
+                                                  String designTemplate, String companyName, String position) {
         return builder()
                 .user(user)
                 .profileImage(profileImage)
@@ -78,7 +74,6 @@ public class BusinessCard {
                 .introduction(introduction)
                 .styleTemplate(styleTemplate)
                 .designTemplate(designTemplate)
-                .reason(reason)
                 .companyName(companyName)
                 .position(position)
                 .build();
@@ -93,7 +88,6 @@ public class BusinessCard {
                 introduction,
                 styleTemplate,
                 designTemplate,
-                reason,
                 companyName,
                 position,
                 encodeId
@@ -106,13 +100,12 @@ public class BusinessCard {
         }
     }
 
-    public void changeProfile(String profileImage, String name, String email, String introduction, List<String> reason,
+    public void changeProfile(String profileImage, String name, String email, String introduction,
                               String styleTemplate, String designTemplate, String companyName, String position) {
         this.profileImage = profileImage;
         this.name = name;
         this.email = email;
         this.introduction = introduction;
-        this.reason = reason;
         this.styleTemplate = styleTemplate;
         this.designTemplate = designTemplate;
         this.companyName = companyName;

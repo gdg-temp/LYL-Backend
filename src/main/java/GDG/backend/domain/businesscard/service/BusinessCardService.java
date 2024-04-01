@@ -3,7 +3,7 @@ package GDG.backend.domain.businesscard.service;
 import GDG.backend.domain.businesscard.domain.BusinessCard;
 import GDG.backend.domain.businesscard.domain.repository.BusinessCardRepository;
 import GDG.backend.domain.businesscard.exception.BusinessCardNotFoundException;
-import GDG.backend.domain.businesscard.exception.ReasonsExceededException;
+import GDG.backend.domain.businesscard.exception.CardExceededException;
 import GDG.backend.domain.businesscard.presentation.dto.request.ChangeProfileRequest;
 import GDG.backend.domain.businesscard.presentation.dto.request.CreateBusinessCardRequest;
 import GDG.backend.domain.businesscard.presentation.dto.response.BusinessCardProfileResponse;
@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 @Slf4j
 @Service
@@ -40,8 +38,9 @@ public class BusinessCardService implements BusinessCardServiceUtils{
     @Transactional
     public BusinessCardProfileResponse createBusinessCard(CreateBusinessCardRequest createBusinessCardRequest) {
         User currentUser = userUtils.getUserFromSecurityContext();
-        if (4 <= createBusinessCardRequest.reasonTexts().size()) {
-            throw ReasonsExceededException.EXCEPTION;
+
+        if (5 <= businessCardRepository.countByUser(currentUser)) {
+            throw CardExceededException.EXCEPTION;
         }
 
         BusinessCard businessCard = BusinessCard.createBusinessCard(
@@ -52,7 +51,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 createBusinessCardRequest.introduction(),
                 createBusinessCardRequest.styleTemplate(),
                 createBusinessCardRequest.designTemplate(),
-                createBusinessCardRequest.reasonTexts(),
                 createBusinessCardRequest.companyName(),
                 createBusinessCardRequest.position()
         );
@@ -86,8 +84,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        List<String> reasonTexts = card.getReason();
-
         User user = userUtils.getUserFromSecurityContext();
         String encodeId = card.getEncodeId();
         Boolean isMine = (user == card.getUser());
@@ -96,7 +92,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 encodeId,
                 card.getBusinessCardInfo(),
                 isMine,
-                reasonTexts,
                 linkInfos
         );
     }
@@ -122,9 +117,7 @@ public class BusinessCardService implements BusinessCardServiceUtils{
             linkInfos = new ArrayList<>();
         }
 
-        List<String> reasonTexts = card.getReason();
-
-        return new BusinessCardProfileResponse(encodeId, card.getBusinessCardInfo(), isMine, reasonTexts, linkInfos);
+        return new BusinessCardProfileResponse(encodeId, card.getBusinessCardInfo(), isMine, linkInfos);
     }
 
      // 명함 정보 수정하기
@@ -138,7 +131,6 @@ public class BusinessCardService implements BusinessCardServiceUtils{
                 changeProfileRequest.name(),
                 changeProfileRequest.email(),
                 changeProfileRequest.introduction(),
-                changeProfileRequest.reasonTexts(),
                 changeProfileRequest.styleTemplate(),
                 changeProfileRequest.designTemplate(),
                 changeProfileRequest.companyName(),
