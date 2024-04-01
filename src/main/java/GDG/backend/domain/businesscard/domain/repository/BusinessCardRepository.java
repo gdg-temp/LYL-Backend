@@ -13,4 +13,5 @@ public interface BusinessCardRepository extends JpaRepository<BusinessCard, Long
     List<BusinessCard> findAllByUser(User user);
 
     Optional<BusinessCard> findByEncodeId(String encodeId);
+    Long countByUser(User user);
 }
