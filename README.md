@@ -23,11 +23,3 @@
 <br/>
 <div align="center"><img align="center" width="640" alt="ERD" src="https://github.com/gdg-temp/LYL-Backend/assets/92250144/19c07bcc-a764-422f-a5b1-f2e6301df234.png"></div>
 
----
-
-## 2. 서버 아키텍쳐
-
-<div align="center"><img align="center" width="640" alt="ㄷㄱㅇ" src="https://user-images.githubusercontent.com/13329304/212339699-dab9355f-668a-434b-b3b9-217c1756a707.png"></div>
-
----
-
