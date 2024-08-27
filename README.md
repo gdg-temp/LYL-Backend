@@ -23,3 +23,7 @@
 <br/>
 <div align="center"><img align="center" width="640" alt="ERD" src="https://github.com/gdg-temp/LYL-Backend/assets/92250144/19c07bcc-a764-422f-a5b1-f2e6301df234.png"></div>
 
+## 2. 시스템 아키텍처
+
+<br/>
+<div align="center"><img align="center" width="640" alt="시스템 아키텍처" src="https://github.com/user-attachments/assets/f7ea7700-ff7e-46d6-b1ce-333cb597aebd"></div>
